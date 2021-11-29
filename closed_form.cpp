@@ -3,7 +3,6 @@
 #include <limits>
 #include <algorithm>
 
-//bite
 
 namespace dauphine
 {
