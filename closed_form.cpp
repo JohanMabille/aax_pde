@@ -3,13 +3,15 @@
 #include <limits>
 #include <algorithm>
 
+//bite
+
 namespace dauphine
 {
     double ncdf(double x)
     {
         return 0.5 * std::erfc(-x / std::sqrt(2));
     }
-    
+
     double vanilla_payoff(double fwd, double strike, bool is_call)
     {
         return std::max(is_call ? fwd - strike : strike - fwd, 0.);
