@@ -27,5 +27,5 @@ set(PDE_SOLVER_SRCS
 )
 
 set(PDE_SOLVER_TARGET pde_solver)
-add_executable(${PDE_SOLVER_TARGET} ${PDE_SOLVER_SRCS})
+add_executable(${PDE_SOLVER_TARGET} ${PDE_SOLVER_SRCS} )
 

@@ -12,7 +12,6 @@ namespace payoff
         Payoff() = default;
         virtual std::vector<double> compute_payoff (std::vector<double>& spot) const = 0;
         ~Payoff() = default;
-
     };
 
     class Call: public Payoff
@@ -23,8 +22,6 @@ namespace payoff
         std::vector<double> compute_payoff (std::vector<double>& spot) const override;
     private :
         double m_strike;
-
-
     };
 
 
@@ -36,9 +33,9 @@ namespace payoff
         std::vector<double> compute_payoff (std::vector<double>& spot) const override;
     private :
         double m_strike;
-
-
     };
+
+    void test_payoff();
 
 }
 #endif // PAYOFF_H_INCLUDED

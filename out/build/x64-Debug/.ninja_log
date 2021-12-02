@@ -1,0 +1,4 @@
+# ninja log v5
+8	700	6601416342861825	CMakeFiles/pde_solver.dir/main.cpp.obj	eaec8dab5b21f2d0
+1	717	6601416343064561	CMakeFiles/pde_solver.dir/closed_form.cpp.obj	d07bff008f10e520
+15	1069	6601416346577292	CMakeFiles/pde_solver.dir/utils.cpp.obj	4dd0c5c7e17102ff
