@@ -33,3 +33,8 @@
 
 # codeBlocks
 *.cbp
+*.depend
+*.layout
+
+#visual studio
+./out
