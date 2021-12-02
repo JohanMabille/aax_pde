@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <iterator>
 
 
 namespace payoff
@@ -23,8 +24,7 @@ namespace payoff
     std::vector<double> Call::compute_payoff(std::vector<double>& S) const
     {
         std::vector<double> res(S.size());
-        double k = 100; //to be removed
-        std::transform(S.begin(), S.end(), res.begin(), [k](double x) {return std::max(0., x-k);});
+        std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., x - m_strike);});
         return res;
     }
 
@@ -44,13 +44,12 @@ namespace payoff
     std::vector<double> Put::compute_payoff(std::vector<double>& S) const
     {
         std::vector<double> res(S.size());
-        double k = m_strike; //TO DO
-        std::transform(S.begin(), S.end(), res.begin(), [k](double x) {return std::max(0., k-x);});
+        std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., m_strike - x);});
         return res;
     }
 
 
-    // test 
+    // test
 
     void print_vector(const std::vector<double>& v)
     {
