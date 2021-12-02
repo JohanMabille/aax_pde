@@ -14,10 +14,9 @@ void print_vector(const std::vector<double>& v)
 
 int test_payoff()
 {
-    payoff::Call test_call(100);
-
     std::vector<double> S = {98., 100., 102.};
 
+    payoff::Call test_call(100);
     return test_call.compute_payoff(S);
 
 

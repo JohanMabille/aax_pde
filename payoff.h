@@ -5,6 +5,7 @@
 
 namespace payoff
 {
+
     class Payoff
     {
     public :
@@ -25,7 +26,6 @@ namespace payoff
 
 
     };
-
 
 
     class Put: public Payoff

@@ -40,7 +40,7 @@ namespace payoff
     std::vector<double> Put::compute_payoff(std::vector<double>& S) const
     {
         std::vector<double> res(S.size());
-        double k = 100; //to be removed
+        double k = m_strike; //TO DO
         std::transform(S.begin(), S.end(), res.begin(), [k](double x) {return std::max(0., k-x);});
         return res;
     }
