@@ -11,7 +11,8 @@ namespace boundary
     public:
         BoundaryCondition() = default;
         ~BoundaryCondition() = default;
-        std::vector<std::vector<double>> get_conditions(int time, double space);
+        std::vector<std::vector<double>> get_conditions(int time, double space); //calcul des conditions aux bornes à chaque itération
+        //Potential TODO: calculer les conditions aux bornes d'un coup
 
     protected:
         virtual std::vector<double> get_coef_Xt(int time, double space);

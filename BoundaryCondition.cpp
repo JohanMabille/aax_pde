@@ -25,4 +25,6 @@ namespace boundary
         std::vector<double> condition;
         return condition;
     }
+
+    //TODO: implementer un throw dans le cas où les variables ne sont pas déclarées
 }

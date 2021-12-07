@@ -33,3 +33,26 @@
 
 1638885956 source:c:\users\aym3r\documents\cours\203\cpp\pde\aax_pde\matrixsystem.cpp
 
+1638905631 source:c:\users\xavie\documents\boulot\203\cours\c++\projet\aax_pde\closed_form.cpp
+	"closed_form.hpp"
+	<cmath>
+	<limits>
+	<algorithm>
+
+1638183291 c:\users\xavie\documents\boulot\203\cours\c++\projet\aax_pde\closed_form.hpp
+	<vector>
+
+1638905632 source:c:\users\xavie\documents\boulot\203\cours\c++\projet\aax_pde\main.cpp
+	"closed_form.hpp"
+	"payoff.h"
+
+1638905632 c:\users\xavie\documents\boulot\203\cours\c++\projet\aax_pde\payoff.h
+	<vector>
+
+1638889350 source:c:\users\xavie\documents\boulot\203\cours\c++\projet\aax_pde\payoff.cpp
+	"payoff.h"
+	<iostream>
+	<vector>
+	<algorithm>
+	<iterator>
+
