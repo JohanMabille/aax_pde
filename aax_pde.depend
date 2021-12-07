@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1638881392 source:c:\users\aym3r\documents\cours\203\cpp\pde\aax_pde\closed_form.cpp
+	"closed_form.hpp"
+	<cmath>
+	<limits>
+	<algorithm>
+
+1638181327 c:\users\aym3r\documents\cours\203\cpp\pde\aax_pde\closed_form.hpp
+	<vector>
+
+1638445939 source:c:\users\aym3r\documents\cours\203\cpp\pde\aax_pde\main.cpp
+	"closed_form.hpp"
+	"payoff.h"
+
+1638445939 c:\users\aym3r\documents\cours\203\cpp\pde\aax_pde\payoff.h
+	<vector>
+
+1638445939 source:c:\users\aym3r\documents\cours\203\cpp\pde\aax_pde\payoff.cpp
+	"payoff.h"
+	<iostream>
+	<vector>
+	<algorithm>
+	<iterator>
+
+1638885387 source:c:\users\aym3r\documents\cours\203\cpp\pde\aax_pde\boundarycondition.cpp
+	"BoundaryCondition.h"
+	<vector>
+	<iostream>
+
+1638885415 c:\users\aym3r\documents\cours\203\cpp\pde\aax_pde\boundarycondition.h
+	<vector>
+	<stdexcept>
+
