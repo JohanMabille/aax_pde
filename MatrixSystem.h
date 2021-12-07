@@ -1,12 +1,12 @@
 #ifndef MATRIXSYSTEM_H_INCLUDED
 #define MATRIXSYSTEM_H_INCLUDED
 
-#include <Eigen/Dense>
+#include "eigen-3.4.0/Eigen/Dense"
 #include <vector>
 #include "BoundaryCondition.h"
 #include "CoefEquation.h"
 
-namespace system
+namespace system_matrix
 {
     class MatrixSystem
     {
@@ -15,6 +15,7 @@ namespace system
                      coef_eq::CoefEquation beta,
                      coef_eq::CoefEquation gamma,
                      coef_eq::CoefEquation delta,
+                     double theta,
                      boundary::BoundaryCondition boundary_small_spot,
                      boundary::BoundaryCondition boundary_big_spot,
                      std::vector<double> Xt1);
@@ -23,10 +24,10 @@ namespace system
         std::vector<double> get_result();
 
     private:
-        eigen::matrixXd m_A_prime;
-        eigen::matrixXd m_A_second;
-        eigen::matrixXd m_b;
-        std::vector<double> result; // use of vector in order to avoid having to import eigen in client
+        Eigen::MatrixXd m_A_prime;
+        Eigen::MatrixXd m_A_second;
+        Eigen::MatrixXd m_b;
+        std::vector<double> m_result; // use of vector in order to avoid having to import eigen in client
     };
 }
 
