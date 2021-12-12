@@ -35,6 +35,7 @@
 		<Unit filename=".gitignore" />
 		<Unit filename="BoundaryCondition.cpp" />
 		<Unit filename="BoundaryCondition.h" />
+		<Unit filename="CoefEquation.cpp" />
 		<Unit filename="CoefEquation.h" />
 		<Unit filename="MatrixSystem.cpp" />
 		<Unit filename="MatrixSystem.h" />
