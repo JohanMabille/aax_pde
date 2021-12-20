@@ -16,8 +16,13 @@ namespace system_matrix
                      coef_eq::CoefEquation gamma,
                      coef_eq::CoefEquation delta,
                      double theta,
+                     double dt,
+                     double dx,
+                     double sigma,
+                     double r,
                      boundary::BoundaryCondition boundary_small_spot,
                      boundary::BoundaryCondition boundary_big_spot,
+                     double time,
                      std::vector<double> Xt1);
         ~MatrixSystem() = default;
         void solve();
