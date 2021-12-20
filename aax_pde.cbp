@@ -33,6 +33,11 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename=".gitignore" />
+		<Unit filename="BoundaryCondition.cpp" />
+		<Unit filename="BoundaryCondition.h" />
+		<Unit filename="CoefEquation.h" />
+		<Unit filename="MatrixSystem.cpp" />
+		<Unit filename="MatrixSystem.h" />
 		<Unit filename="closed_form.cpp" />
 		<Unit filename="closed_form.hpp" />
 		<Unit filename="main.cpp" />
