@@ -47,84 +47,11 @@ namespace system_matrix
 
     //i = 0
 
-    double MatrixSystem::Omega_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = -theta * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) - beta.get_value({sigma, r}) / dx + gamma.get_value({sigma, r})) - 1;
-        return res;
-    }
-
-    double MatrixSystem::a_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = (1 - theta) * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) - beta.get_value({sigma, r}) / dx + gamma.get_value({sigma, r})) - 1;
-        return res;
-    }
-
-    double MatrixSystem::b_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = theta * dt * (beta.get_value({sigma, r}) / dx - 2*alpha.get_value({sigma, r}) / pow(dx, 2.0));
-        return res;
-    }
-
-    double MatrixSystem::c_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = (1 - theta) * dt * (beta.get_value({sigma, r}) / dx - 2*alpha.get_value({sigma, r}) / pow(dx, 2.0));
-        return res;
-    }
-
-    double MatrixSystem::d_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = theta * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0));
-        return res;
-    }
-
-    double MatrixSystem::e_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = (1 - theta) * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0));
-        return res;
-    }
-
-    // i = N
-
-    double MatrixSystem::Omega_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = -theta * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) + beta.get_value({sigma, r}) / dx + gamma.get_value({sigma, r})) - 1;
-        return res;
-    }
-
-    double MatrixSystem::a_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = (1 - theta) * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) + beta.get_value({sigma, r}) / dx + gamma.get_value({sigma, r})) - 1;
-        return res;
-    }
-
-    double MatrixSystem::b_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = -theta * dt * (beta.get_value({sigma, r}) / dx + 2*alpha.get_value({sigma, r}) / pow(dx, 2.0));
-        return res;
-    }
-
-    double MatrixSystem::c_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = -(1 - theta) * dt * (beta.get_value({sigma, r}) / dx + 2*alpha.get_value({sigma, r}) / pow(dx, 2.0));
-        return res;
-    }
-
-    double MatrixSystem::d_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = theta * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0));
-        return res;
-    }
-
-    double MatrixSystem::e_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        double res = (1 - theta) * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0));
-        return res;
-    }
 
     MatrixSystem::MatrixSystem(coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma, coef_eq::CoefEquation delta,
-                     double theta, double dt, double dx, double sigma, double r,
+                     double theta, double dt, double dx, double sigma, double r, double time,
                      boundary::BoundaryCondition boundary_small_spot, boundary::BoundaryCondition boundary_big_spot,
-                     double time, std::vector<double> Xt1)
+                     std::vector<double> Xt1)
     {
         int N = Xt1.size();
 
@@ -149,10 +76,11 @@ namespace system_matrix
             A_second(N,j) = cond_big[1][j];
         }
 
+        Omega_matrix(0,0) = cond_small[2][0];
+        Omega_matrix(N,N) = cond_big[2][0];
+
         // ######### body #########
         // Omega
-        Omega_matrix(0,0) = Omega_0(theta, dt, dx, sigma, r, alpha, beta, gamma);
-        Omega_matrix(N,N) = Omega_N(theta, dt, dx, sigma, r, alpha, beta, gamma);
         for (int i=1; i<N-1; ++i)
         {
             Omega_matrix(i,i) = Omega(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
