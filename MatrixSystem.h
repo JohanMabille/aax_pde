@@ -25,14 +25,11 @@ namespace system_matrix
                      double time,
                      std::vector<double> Xt1);
         ~MatrixSystem() = default;
-        void solve();
-        std::vector<double> get_result();
+        std::vector<double> solve();
 
     private:
-        Eigen::MatrixXd m_A_prime;
-        Eigen::MatrixXd m_A_second;
+        Eigen::MatrixXd m_A;
         Eigen::MatrixXd m_b;
-        std::vector<double> m_result; // use of vector in order to avoid having to import eigen in client
 
         double Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
         double a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
