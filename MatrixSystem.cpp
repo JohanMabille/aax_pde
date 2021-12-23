@@ -121,25 +121,31 @@ namespace system_matrix
         return res;
     }
 
-    MatrixSystem::MatrixSystem(coef_eq::CoefEquation alpha,
-                     coef_eq::CoefEquation beta,
-                     coef_eq::CoefEquation gamma,
-                     coef_eq::CoefEquation delta,
-                     double theta,
-                     double dt,
-                     double dx,
-                     double sigma,
-                     double r,
-                     boundary::BoundaryCondition boundary_small_spot,
-                     boundary::BoundaryCondition boundary_big_spot,
-                     double time,
-                     std::vector<double> Xt1)
+    MatrixSystem::MatrixSystem(coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma, coef_eq::CoefEquation delta,
+                     double theta, double dt, double dx, double sigma, double r,
+                     boundary::BoundaryCondition boundary_small_spot, boundary::BoundaryCondition boundary_big_spot,
+                     double time, std::vector<double> Xt1)
     {
         int N = Xt1.size();
 
         Eigen::MatrixXd A_prime(N,N);
         Eigen::MatrixXd A_second(N,N);
         Eigen::MatrixXd b(N,1);
+
+        // ######### boundaries #########
+
+        double small_spot = 0;
+        double big_spot = 1000;
+        std::vector<std::vector<double>> cond_small = boundary_small_spot.get_conditions(time, small_spot, N);
+        std::vector<std::vector<double>> cond_big = boundary_big_spot.get_conditions(time, big_spot, N);
+
+        for (int j=0; j < N; ++j)
+        {
+            A_prime(0,j) = cond_small[0][j] / Omega_0(theta, dt, dx, sigma, r, alpha, beta, gamma);
+            A_prime(N,j) = cond_big[0][j] / Omega_N(theta, dt, dx, sigma, r, alpha, beta, gamma);
+            A_second(0,j) = cond_small[1][j] / Omega_0(theta, dt, dx, sigma, r, alpha, beta, gamma);
+            A_second(N,j) = cond_big[1][j] / Omega_N(theta, dt, dx, sigma, r, alpha, beta, gamma);
+        }
 
         // ######### body #########
         // A'
@@ -183,14 +189,6 @@ namespace system_matrix
         {
             b(i,1) = delta.get_value({sigma, r});
         }
-
-        // ######### boundaries #########
-        // find a way to know if the condition is on f or the derivatives
-
-        double small_spot = 0;
-        double big_spot = 1000;
-        std::vector<std::vector<double>> cond_small = boundary_small_spot.get_conditions(time, small_spot, N);
-        std::vector<std::vector<double>> cond_big = boundary_big_spot.get_conditions(time, big_spot, N);
     }
 
     std::vector<double> MatrixSystem::get_result()
