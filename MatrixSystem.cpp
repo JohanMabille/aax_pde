@@ -65,8 +65,10 @@ namespace system_matrix
 
         double small_spot = 0;
         double big_spot = 1000;
-        std::vector<std::vector<double>> cond_small = boundary_small_spot.get_conditions(time, small_spot, N);
-        std::vector<std::vector<double>> cond_big = boundary_big_spot.get_conditions(time, big_spot, N);
+        std::vector<std::vector<double>> cond_small = boundary_small_spot.get_conditions(time, small_spot, N, theta,  dt,  dx,  sigma,  r,
+                                                        alpha, beta, gamma);
+        std::vector<std::vector<double>> cond_big = boundary_big_spot.get_conditions(time, big_spot, N, theta,  dt,  dx,  sigma,  r,
+                                                        alpha, beta, gamma);
 
         for (int j=0; j < N; ++j)
         {

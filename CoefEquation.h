@@ -4,7 +4,7 @@
 
 namespace coef_eq
 {
-    class CoefEquation
+    class CoefEquation //Classe mère
     {
     public:
         virtual double get_value(std::vector<double> args) const;
@@ -13,7 +13,7 @@ namespace coef_eq
     class Alpha: public CoefEquation
     {
     public:
-        double get_value(std::vector<double> args) const override;
+        double get_value(std::vector<double> args) const override; //Override: pour utiliser le même nom de méthode sur la fille
     };
 
     class Beta: public CoefEquation
