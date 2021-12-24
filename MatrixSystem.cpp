@@ -55,22 +55,23 @@ namespace system_matrix
     {
         int N = Xt1.size();
 
+        //Omega*Xt = A'*Xt+1 + A''*Xt +b <==> m_A*Xt = m_b | avec m_A = (Omega - A'') et m_b = A'*Xt+1 + b
         Eigen::MatrixXd A_prime(N,N);
         Eigen::MatrixXd A_second(N,N);
         Eigen::MatrixXd Omega_matrix(N,N);
         Eigen::MatrixXd b(N,1);
-        Eigen::VectorXd Xt1_matrix = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(Xt1.data(), Xt1.size());
+        Eigen::VectorXd Xt1_matrix = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(Xt1.data(), Xt1.size()); // from std::vect to eigen::vect
 
         // ######### boundaries #########
 
         double small_spot = 0;
         double big_spot = 1000;
         std::vector<std::vector<double>> cond_small = boundary_small_spot.get_conditions(time, small_spot, N, theta,  dt,  dx,  sigma,  r,
-                                                        alpha, beta, gamma);
+                                                        alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
         std::vector<std::vector<double>> cond_big = boundary_big_spot.get_conditions(time, big_spot, N, theta,  dt,  dx,  sigma,  r,
-                                                        alpha, beta, gamma);
+                                                        alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
 
-        for (int j=0; j < N; ++j)
+        for (int j=0; j < N; ++j) // on remplit la matrice en bouclant sur les colonnes
         {
             A_prime(0,j) = cond_small[0][j];
             A_prime(N,j) = cond_big[0][j];
@@ -109,7 +110,7 @@ namespace system_matrix
         // A''
         for (int i=1; i < N-1; ++i)
         {
-            for (int j=0; j < i-1; ++j)
+            for (int j=0; j < i-1; ++j) //à optimiser ?
             {
                 A_second(i, j) = 0;
             }

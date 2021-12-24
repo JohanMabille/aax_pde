@@ -2,7 +2,7 @@
 #include "payoff.h"
 #include <vector>
 #include <iostream>
-#include "eigen-3.4.0/eigen-3.4.0/Eigen/Dense"
+#include "eigen-3.4.0/Eigen/Dense"
 
 int main(int argc, const char * argv[])
 {

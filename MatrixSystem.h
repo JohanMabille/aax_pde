@@ -19,8 +19,9 @@ namespace system_matrix
         std::vector<double> solve();
 
     private:
-        Eigen::MatrixXd m_A;
-        Eigen::MatrixXd m_b;
+        //Omega*Xt = A'*Xt+1 + A''*Xt +b <==> m_A*Xt = m_b
+        Eigen::MatrixXd m_A; //avec m_A = (Omega - A'')
+        Eigen::MatrixXd m_b; //et m_b = A'*Xt+1 + b
 
         double Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
         double a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
