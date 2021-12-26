@@ -9,11 +9,13 @@ namespace system_matrix
 {
     //i != 0, i!=N
 
+    // on peut enlever la dépendance en i de tous les coeff de la matrice coeur
     double MatrixSystem::Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
     {
         double res = theta * dt * (2*alpha.get_value({sigma, r}) / pow(dx, 2.0) - gamma.get_value({sigma, r})) - 1;
         return res;
     }
+
 
     double MatrixSystem::a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
     {
@@ -73,14 +75,14 @@ namespace system_matrix
 
         for (int j=0; j < N; ++j) // on remplit la matrice en bouclant sur les colonnes
         {
-            A_prime(0,j) = cond_small[0][j];
-            A_prime(N,j) = cond_big[0][j];
-            A_second(0,j) = cond_small[1][j];
-            A_second(N,j) = cond_big[1][j];
+            A_prime(0,j) = cond_big[0][j];
+            A_prime(N,j) = cond_small[0][j];
+            A_second(0,j) = cond_big[1][j];
+            A_second(N,j) = cond_small[1][j];
         }
 
-        Omega_matrix(0,0) = cond_small[2][0];
-        Omega_matrix(N,N) = cond_big[2][0];
+        Omega_matrix(0,0) = cond_big[2][0];
+        Omega_matrix(N,N) = cond_small[2][0];
 
         // ######### body #########
         // Omega
