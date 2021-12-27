@@ -32,7 +32,6 @@
 *.app
 
 # codeBlocks
-*.cbp
 *.depend
 *.layout
 
