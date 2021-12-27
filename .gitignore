@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# codeBlocks
+*.depend
+*.layout
+
+#visual studio
+/out
+CMakelist.txt
