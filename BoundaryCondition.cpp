@@ -8,9 +8,9 @@ namespace boundary
     std::vector<std::vector<double>> BoundaryCondition::get_conditions(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
                                                                         coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
     {
-        std::vector<double> coef_Xt = BoundaryCondition::get_coef_Xt(time, space, length, theta, dt, dx, sigma, r, alpha, beta, gamma);
-        std::vector<double> coef_Xt1 = BoundaryCondition::get_coef_Xt1(time, space, length, theta, dt, dx, sigma, r, alpha, beta, gamma);
-        std::vector<double> coef_diag = BoundaryCondition::get_coef_diag(time, space, length, theta, dt, dx, sigma, r, alpha, beta, gamma);
+        std::vector<double> coef_Xt = get_coef_Xt(time, space, length, theta, dt, dx, sigma, r, alpha, beta, gamma);
+        std::vector<double> coef_Xt1 = get_coef_Xt1(time, space, length, theta, dt, dx, sigma, r, alpha, beta, gamma);
+        std::vector<double> coef_diag = get_coef_diag(time, space, length, theta, dt, dx, sigma, r, alpha, beta, gamma);
         std::vector<std::vector<double>> conditions = {coef_Xt, coef_Xt1, coef_diag};
         return conditions;
     }
