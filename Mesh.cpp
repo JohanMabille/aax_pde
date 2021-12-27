@@ -52,5 +52,44 @@ namespace mesh
             return (grid_res[m_nb_steps_time - 1][m_nb_steps_space / 2] + grid_res[m_nb_steps_time - 1][m_nb_steps_space / 2 - 1]) / 2;
         }
     }
+
+    double Mesh::get_delta()
+    {
+        if (m_nb_steps_space % 2 == 1)
+        {
+            return (grid_res[m_nb_steps_time - 1][floor(m_nb_steps_space / 2) + 1] - grid_res[m_nb_steps_time - 1][floor(m_nb_steps_space / 2) - 1]) / (2 * m_dx);
+        }
+        else
+        {
+            // approximation if parameters given by the user are not perfect
+            return (grid_res[m_nb_steps_time - 1][m_nb_steps_space / 2 ] - grid_res[m_nb_steps_time - 1][m_nb_steps_space / 2 - 1]) / m_dx;
+        }
+    }
+
+    double Mesh::get_gamma()
+    {
+        if (m_nb_steps_space % 2 == 1)
+        {
+            return (grid_res[m_nb_steps_time - 1][floor(m_nb_steps_space / 2) + 2] - grid_res[m_nb_steps_time - 1][floor(m_nb_steps_space / 2) - 2]) / pow(2. * m_dx, 2.);
+        }
+        else
+        {
+            // approximation if parameters given by the user are not perfect
+            return (grid_res[m_nb_steps_time - 1][m_nb_steps_space / 2 + 1] - grid_res[m_nb_steps_time - 1][m_nb_steps_space / 2 - 2]) / pow(2. * m_dx, 2.);
+        }
+    }
+
+    double Mesh::get_theta()
+    {
+        if (m_nb_steps_space % 2 == 1)
+        {
+            return (grid_res[m_nb_steps_time - 1][floor(m_nb_steps_space / 2)] - grid_res[m_nb_steps_time - 2][floor(m_nb_steps_space / 2)]) / m_dt;
+        }
+        else
+        {
+            // approximation if parameters given by the user are not perfect
+            return ((grid_res[m_nb_steps_time - 1][m_nb_steps_space / 2] - grid_res[m_nb_steps_time - 1][m_nb_steps_space / 2 - 1]) - (grid_res[m_nb_steps_time - 2][m_nb_steps_space / 2] + grid_res[m_nb_steps_time - 2][m_nb_steps_space / 2 - 1])) / m_dt;
+        }
+    }
 }
 
