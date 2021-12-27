@@ -15,33 +15,6 @@ namespace boundary
         return conditions;
     }
 
-    std::vector<double> BoundaryCondition::get_coef_Xt(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                       coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        //todo
-        std::vector<double> condition;
-        return condition;
-    }
-
-    std::vector<double> BoundaryCondition::get_coef_Xt1(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                        coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        //todo
-        std::vector<double> condition;
-        return condition;
-    }
-
-    std::vector<double> BoundaryCondition::get_coef_diag(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                          coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
-    {
-        //todo
-        std::vector<double> condition;
-        return condition;
-    }
-
-    //TODO: implementer un throw dans le cas où les variables ne sont pas déclarées
-
-
     double ConditionBig::Omega_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
     {
         double res = -theta * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) + beta.get_value({sigma, r}) / dx + gamma.get_value({sigma, r})) - 1;
