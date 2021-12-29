@@ -70,7 +70,6 @@ namespace system_matrix
                                                         alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
         std::vector<std::vector<double>> cond_big = boundary_big_spot -> get_conditions(time, spot_max, N, theta,  dt,  dx,  sigma,  r,
                                                         alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
-        std::cout << " A " << std::endl;
 
         for (int j=0; j < N; ++j) // on remplit la matrice en bouclant sur les colonnes
         {
