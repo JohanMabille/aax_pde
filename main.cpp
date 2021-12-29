@@ -14,7 +14,7 @@ void test_mesh()
     double K = 100.;
     double sigma = 0.16;
     double theta = 0.5;
-    double maturity = 30./29;
+    double maturity = 1;
     int nb_steps_time = maturity;
     int nb_steps_space = 10;
     double r = 0.;
