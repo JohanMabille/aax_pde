@@ -1,14 +1,20 @@
 #include "Mesh.h"
 #include <cmath>
+#include <iostream>
 
 namespace mesh
 {
     Mesh::Mesh(double S0, double sigma, int maturity, int nb_steps_space, int nb_steps_time, double theta, double r,
-             payoff::Payoff *pf, boundary::BoundaryCondition bound_small, boundary::BoundaryCondition bound_big,
+             payoff::Payoff *pf, boundary::BoundaryCondition *bound_small, boundary::BoundaryCondition *bound_big,
              coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma, coef_eq::CoefEquation delta)
              : m_S0(S0), m_sigma(sigma), m_maturity(maturity), m_nb_steps_space(nb_steps_space), m_nb_steps_time(nb_steps_time), m_theta(theta), m_r(r),
              m_pf(pf), m_bound_small(bound_small), m_bound_big(bound_big), m_alpha(alpha), m_beta(beta), m_gamma(gamma), m_delta(delta)
              {}
+
+//    Mesh::~Mesh()
+//    {
+//        std::cout << "Mesh destructor" << std::endl;
+//    }
 
     std::vector<double> Mesh::initiate_spot_values(double S0, double sigma, int maturity, int nb_steps)
     {
