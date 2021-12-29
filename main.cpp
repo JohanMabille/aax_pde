@@ -10,12 +10,13 @@
 void test_mesh()
 {
     // params
-    double S = 100.;
-    double K = 100.;
+    double S = log(100.);
+    double K = log(100.);
+    std::cout << S << std::endl;
     double sigma = 0.16;
     double theta = 0.5;
     double maturity = 1;
-    int nb_steps_time = maturity;
+    int nb_steps_time = maturity*52;
     int nb_steps_space = 10;
     double r = 0.;
     payoff::Payoff *pf = new payoff::Call(K);
@@ -29,7 +30,7 @@ void test_mesh()
     // pricing pde
     mesh::Mesh Mesh_call(S, sigma, maturity, nb_steps_space, nb_steps_time, theta, r, pf, b_small, b_big, alpha, beta, gamma, delta);
     Mesh_call.run();
-    std::cout << "price = " << Mesh_call.get_price() << std::endl;
+    std::cout << "price = " << exp(Mesh_call.get_price()) << std::endl;
 
     // pricing closed form
 

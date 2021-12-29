@@ -14,10 +14,9 @@ namespace mesh
 
     std::vector<double> Mesh::initiate_spot_values(double S0, double sigma, double maturity, int nb_steps)
     {
-//        double spot_max = log(S0) + 5 * sigma * sqrt(maturity);
-//        double spot_min = log(S0) - 5 * sigma * sqrt(maturity);
-        double spot_max = S0 + 20.;
-        double spot_min = S0 - 20.;
+    double spot_max = S0 + 5 * sigma * sqrt(maturity);
+    double spot_min = S0 - 5 * sigma * sqrt(maturity);
+
         m_dx = (spot_max - spot_min) / nb_steps;
 
         std::vector<double> res(nb_steps);
@@ -31,6 +30,7 @@ namespace mesh
     void Mesh::run()
     {
         std::vector<double> spot_axis = initiate_spot_values(m_S0, m_sigma, m_maturity, m_nb_steps_space);
+        payoff::print_vector(spot_axis);
         std::vector<double> Xt1 = m_pf->compute_payoff(spot_axis);
 
         m_dt = m_maturity / m_nb_steps_time;
