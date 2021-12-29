@@ -16,7 +16,7 @@ namespace mesh
     public:
         Mesh(double& S0, double& sigma, int& maturity, int& nb_steps_space, int& nb_steps_time, double& theta, double& r,
              payoff::Payoff*& pf, boundary::BoundaryCondition*& bound_small, boundary::BoundaryCondition*& bound_big,
-             coef_eq::CoefEquation& alpha, coef_eq::CoefEquation& beta, coef_eq::CoefEquation& gamma, coef_eq::CoefEquation& delta);
+             coef_eq::CoefEquation*& alpha, coef_eq::CoefEquation*& beta, coef_eq::CoefEquation*& gamma, coef_eq::CoefEquation*& delta);
         ~Mesh () = default;
         std::vector<double> initiate_spot_values(double S0, double sigma, int maturity, int nb_steps_space);
         void run();
@@ -32,15 +32,15 @@ namespace mesh
         int m_maturity;
         int m_nb_steps_space;
         int m_nb_steps_time;
-        int m_theta;
+        double m_theta;
         int m_r;
         double m_dx;
         double m_dt;
         bool vega_computed = false; //boolean pour savoir si on a déjà rempli la grille bumped vol
-        coef_eq::CoefEquation m_alpha;
-        coef_eq::CoefEquation m_beta;
-        coef_eq::CoefEquation m_gamma;
-        coef_eq::CoefEquation m_delta;
+        coef_eq::CoefEquation* m_alpha;
+        coef_eq::CoefEquation* m_beta;
+        coef_eq::CoefEquation* m_gamma;
+        coef_eq::CoefEquation* m_delta;
         // change to pointers
         payoff::Payoff* m_pf;
         boundary::BoundaryCondition* m_bound_small;
@@ -49,6 +49,7 @@ namespace mesh
         std::vector<std::vector<double>> grid_res_bumped_sigma;
 
     };
+
 }
 
 
