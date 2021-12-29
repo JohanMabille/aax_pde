@@ -15,6 +15,11 @@ namespace boundary
         return conditions;
     }
 
+    BoundaryCondition::~BoundaryCondition()
+    {
+        std::cout << "BC destructor" << std::endl;
+    }
+
     double ConditionBig::Omega_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
     {
         double res = -theta * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) + beta.get_value({sigma, r}) / dx + gamma.get_value({sigma, r})) - 1;
@@ -89,6 +94,12 @@ namespace boundary
 
 
 
+    ConditionSmall::~ConditionSmall()
+    {
+        std::cout << "BC Small destructor" << std::endl;
+    }
+
+
     std::vector<double> ConditionSmall::get_coef_Xt(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
                                                     coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
                                                                                                         // (zeros, 0, b0, d0)
@@ -99,7 +110,6 @@ namespace boundary
 
         return res;
     }
-
 
 
     std::vector<double> ConditionSmall::get_coef_Xt1(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
@@ -128,6 +138,11 @@ namespace boundary
     }
 
 
+
+    ConditionBig::~ConditionBig()
+    {
+        std::cout << "BC Big destructor" << std::endl;
+    }
     std::vector<double> ConditionBig::get_coef_Xt(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
                                                 coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
                                                     // (dN, bN, 0, zeros)

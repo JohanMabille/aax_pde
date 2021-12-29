@@ -13,7 +13,7 @@ namespace system_matrix
     public:
         MatrixSystem(coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma, coef_eq::CoefEquation delta,
                      double theta, double dt, double dx, double sigma, double r, double time,
-                     boundary::BoundaryCondition boundary_small_spot, boundary::BoundaryCondition boundary_big_spot,
+                     boundary::BoundaryCondition *boundary_small_spot, boundary::BoundaryCondition *boundary_big_spot,
                      std::vector<double> Xt1);
         ~MatrixSystem() = default;
         std::vector<double> solve();

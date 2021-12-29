@@ -52,7 +52,7 @@ namespace system_matrix
 
     MatrixSystem::MatrixSystem(coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma, coef_eq::CoefEquation delta,
                      double theta, double dt, double dx, double sigma, double r, double time,
-                     boundary::BoundaryCondition boundary_small_spot, boundary::BoundaryCondition boundary_big_spot,
+                     boundary::BoundaryCondition *boundary_small_spot, boundary::BoundaryCondition *boundary_big_spot,
                      std::vector<double> Xt1)
     {
         int N = Xt1.size();
@@ -68,9 +68,9 @@ namespace system_matrix
 
         double small_spot = 0;
         double big_spot = 1000;
-        std::vector<std::vector<double>> cond_small = boundary_small_spot.get_conditions(time, small_spot, N, theta,  dt,  dx,  sigma,  r,
+        std::vector<std::vector<double>> cond_small = boundary_small_spot -> get_conditions(time, small_spot, N, theta,  dt,  dx,  sigma,  r,
                                                         alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
-        std::vector<std::vector<double>> cond_big = boundary_big_spot.get_conditions(time, big_spot, N, theta,  dt,  dx,  sigma,  r,
+        std::vector<std::vector<double>> cond_big = boundary_big_spot -> get_conditions(time, big_spot, N, theta,  dt,  dx,  sigma,  r,
                                                         alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
 
         for (int j=0; j < N; ++j) // on remplit la matrice en bouclant sur les colonnes
