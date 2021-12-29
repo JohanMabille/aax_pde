@@ -25,7 +25,7 @@ namespace payoff
     std::vector<double> Call::compute_payoff(std::vector<double>& S) const
     {
         std::vector<double> res(S.size());
-        std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., exp(x) - m_strike);}); // TODO check exp
+        std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., x - m_strike);}); // TODO check exp
         return res;
     }
 
@@ -45,7 +45,7 @@ namespace payoff
     std::vector<double> Put::compute_payoff(std::vector<double>& S) const
     {
         std::vector<double> res(S.size());
-        std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., m_strike - exp(x));});
+        std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., m_strike - x);});
         return res;
     }
 

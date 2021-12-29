@@ -5,6 +5,7 @@
 #include <iostream>
 #include "payoff.h"
 #include "eigen-3.4.0/Eigen/Dense"
+#include <cmath>
 
 void test_mesh()
 {
@@ -13,9 +14,9 @@ void test_mesh()
     double K = 100.;
     double sigma = 0.16;
     double theta = 0.5;
-    int maturity = 30;
+    double maturity = 30./29;
     int nb_steps_time = maturity;
-    int nb_steps_space = 101;
+    int nb_steps_space = 10;
     double r = 0.;
     payoff::Payoff *pf = new payoff::Call(K);
     boundary::BoundaryCondition *b_small = new boundary::ConditionSmall();

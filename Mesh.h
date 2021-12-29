@@ -14,11 +14,11 @@ namespace mesh
     {
 
     public:
-        Mesh(double& S0, double& sigma, int& maturity, int& nb_steps_space, int& nb_steps_time, double& theta, double& r,
+        Mesh(double& S0, double& sigma, double& maturity, int& nb_steps_space, int& nb_steps_time, double& theta, double& r,
              payoff::Payoff*& pf, boundary::BoundaryCondition*& bound_small, boundary::BoundaryCondition*& bound_big,
              coef_eq::CoefEquation*& alpha, coef_eq::CoefEquation*& beta, coef_eq::CoefEquation*& gamma, coef_eq::CoefEquation*& delta);
         ~Mesh () = default;
-        std::vector<double> initiate_spot_values(double S0, double sigma, int maturity, int nb_steps_space);
+        std::vector<double> initiate_spot_values(double S0, double sigma, double maturity, int nb_steps_space);
         void run();
         double get_price();
         double get_delta();
@@ -29,7 +29,7 @@ namespace mesh
     private:
         double m_S0;
         double m_sigma;
-        int m_maturity;
+        double m_maturity;
         int m_nb_steps_space;
         int m_nb_steps_time;
         double m_theta;
