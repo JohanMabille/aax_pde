@@ -14,10 +14,9 @@ namespace mesh
     {
 
     public:
-        Mesh(double S0, double sigma, int maturity, int nb_steps_space, int nb_steps_time, double theta, double r,
-             payoff::Payoff *pf, boundary::BoundaryCondition *bound_small, boundary::BoundaryCondition *bound_big,
-             coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma, coef_eq::CoefEquation delta);
-//        virtual ~Mesh() =0;
+        Mesh(double& S0, double& sigma, int& maturity, int& nb_steps_space, int& nb_steps_time, double& theta, double& r,
+             payoff::Payoff*& pf, boundary::BoundaryCondition*& bound_small, boundary::BoundaryCondition*& bound_big,
+             coef_eq::CoefEquation& alpha, coef_eq::CoefEquation& beta, coef_eq::CoefEquation& gamma, coef_eq::CoefEquation& delta);
         ~Mesh () = default;
         std::vector<double> initiate_spot_values(double S0, double sigma, int maturity, int nb_steps_space);
         void run();

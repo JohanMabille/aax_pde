@@ -4,7 +4,7 @@
 
 namespace coef_eq
 {
-    class CoefEquation //Classe mère
+    class CoefEquation
     {
     public:
         virtual double get_value(std::vector<double> args) const;

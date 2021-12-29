@@ -3,6 +3,7 @@
 #include "BoundaryCondition.h"
 #include <vector>
 #include <cmath>
+#include <iostream>
 #include "eigen-3.4.0/Eigen/Dense"
 
 namespace system_matrix
@@ -140,6 +141,8 @@ namespace system_matrix
 
     std::vector<double> MatrixSystem::solve()
     {
+        std::cout << "inside solve" << std::endl;
+
         Eigen::VectorXd res_vec = m_A.inverse() * m_b;
 
         std::vector<double> result;
