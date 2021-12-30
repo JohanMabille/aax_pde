@@ -14,7 +14,7 @@ namespace system_matrix
     double MatrixSystem::Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (2*alpha->get_value({sigma, r}) / pow(dx, 2.0) - gamma->get_value({sigma, r})) - 1;
-        std::cout <<"omega"<<res<<std::endl;
+        //std::cout <<"Omega: "<<res<<std::endl;
         return res;
     }
 
@@ -22,7 +22,7 @@ namespace system_matrix
     double MatrixSystem::a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (-2*alpha->get_value({sigma, r}) / pow(dx, 2.0) + gamma->get_value({sigma, r})) - 1;
-        std::cout <<"a"<<res<<std::endl;
+        //std::cout <<"a: "<<res<<std::endl;
 
         return res;
     }
@@ -30,28 +30,28 @@ namespace system_matrix
     double MatrixSystem::b_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
-        std::cout <<"b"<<res<<std::endl;
+        //std::cout <<"b: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::c_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
-        std::cout <<"c"<<res<<std::endl;
+        //std::cout <<"c: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::d_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
-        std::cout <<"d"<<res<<std::endl;
+        //std::cout <<"d: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::e_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
-        std::cout <<"e"<<res<<std::endl;
+        //std::cout <<"e: "<<res<<std::endl;
         return res;
     }
 
