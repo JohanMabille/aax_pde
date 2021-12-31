@@ -10,7 +10,7 @@
 void test_mesh()
 {
     // params
-    double S = log(100.);
+    double S = 100.;
     double K = log(100.);
     std::cout << S << std::endl;
     double sigma = 0.16;
