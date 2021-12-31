@@ -105,7 +105,7 @@ namespace system_matrix
 
 
         Omega_matrix(0,0) = cond_big[2][0];
-        Omega_matrix(N-1,N-1) = cond_small[2][0];
+        Omega_matrix(N-1,N-1) = cond_small[2][N-1];
 
         // A'
         for (int i=1; i < N-1; ++i)

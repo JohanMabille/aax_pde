@@ -150,6 +150,8 @@ namespace boundary
         return res;
     }
 
+
+
     ConditionBig::~ConditionBig()
     {
         std::cout << "BC Big destructor" << std::endl;
