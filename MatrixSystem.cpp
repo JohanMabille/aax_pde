@@ -14,7 +14,7 @@ namespace system_matrix
     double MatrixSystem::Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (2*alpha->get_value({sigma, r}) / pow(dx, 2.0) - gamma->get_value({sigma, r})) - 1;
-        //std::cout <<"Omega: "<<res<<std::endl;
+        // std::cout <<"Omega: "<<res<<std::endl;
         return res;
     }
 
@@ -22,7 +22,7 @@ namespace system_matrix
     double MatrixSystem::a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (-2*alpha->get_value({sigma, r}) / pow(dx, 2.0) + gamma->get_value({sigma, r})) - 1;
-        //std::cout <<"a: "<<res<<std::endl;
+        // std::cout <<"a: "<<res<<std::endl;
 
         return res;
     }
@@ -30,28 +30,28 @@ namespace system_matrix
     double MatrixSystem::b_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
-        //std::cout <<"b: "<<res<<std::endl;
+        // std::cout <<"b: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::c_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
-        //std::cout <<"c: "<<res<<std::endl;
+        // std::cout <<"c: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::d_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
-        //std::cout <<"d: "<<res<<std::endl;
+        // std::cout <<"d: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::e_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
-        //std::cout <<"e: "<<res<<std::endl;
+        // std::cout <<"e: "<<res<<std::endl;
         return res;
     }
 
@@ -80,22 +80,32 @@ namespace system_matrix
 
         for (int j=0; j < N; ++j) // on remplit la matrice en bouclant sur les colonnes
         {
-            A_prime(0,j) = cond_big[0][j];
-            A_prime(N-1,j) = cond_small[0][j];
-            A_second(0,j) = cond_big[1][j];
-            A_second(N-1,j) = cond_small[1][j];
+            A_second(0,j) = cond_big[0][j];
+            A_second(N-1,j) = cond_small[0][j];
+            A_prime(0,j) = cond_big[1][j];
+            A_prime(N-1,j) = cond_small[1][j];
 
         }
 
-        Omega_matrix(0,0) = cond_big[2][0];
-        Omega_matrix(N-1,N-1) = cond_small[2][0];
 
         // ######### body #########
         // Omega
-        for (int i=1; i<N-1; ++i)
+
+
+        for (int i=0; i<N; ++i)
         {
+            for (int j=0; j<N; ++j)
+            {
+                Omega_matrix(i,j) = 0.0;
+            }
+
             Omega_matrix(i,i) = Omega(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
+
         }
+
+
+        Omega_matrix(0,0) = cond_big[2][0];
+        Omega_matrix(N-1,N-1) = cond_small[2][N-1];
 
         // A'
         for (int i=1; i < N-1; ++i)
@@ -132,6 +142,15 @@ namespace system_matrix
                 A_second(i, j) = 0;
             }
         }
+
+//        std::cout << "A_prime: " << std::endl;
+//        std::cout << A_prime << std::endl;
+//        std::cout << "A_second: " << std::endl;
+//        std::cout << A_second << std::endl;
+//        std::cout << "Omega: " << std::endl;
+//        std::cout << Omega_matrix << std::endl;
+
+
 
         // b'
         for (int i=0; i < N; ++i)

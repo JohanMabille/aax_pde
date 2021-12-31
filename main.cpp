@@ -11,13 +11,13 @@ void test_mesh()
 {
     // params
     double S = 100.;
-    double K = log(100.);
-    double sigma = 0.16;
+    double K = 80.;
+    double sigma = 0.20;
     double theta = 0.5;
     double maturity = 1;
-    int nb_steps_time = maturity*52;
-    int nb_steps_space = 11;
-    double r = 0.;
+    int nb_steps_time = maturity*365;
+    int nb_steps_space = 1001;
+    double r = 0.05;
     payoff::Payoff *pf = new payoff::Call(K);
     boundary::BoundaryCondition *b_small = new boundary::ConditionSmall();
     boundary::BoundaryCondition *b_big = new boundary::ConditionBig();
@@ -29,7 +29,7 @@ void test_mesh()
     // pricing pde
     mesh::Mesh Mesh_call(S, sigma, maturity, nb_steps_space, nb_steps_time, theta, r, pf, b_small, b_big, alpha, beta, gamma, delta);
     Mesh_call.run();
-    std::cout << "Finite difference price = " << exp(Mesh_call.get_price()) << std::endl;
+    std::cout << "Finite difference price = " << Mesh_call.get_price() << std::endl;
 
     // pricing closed form
 

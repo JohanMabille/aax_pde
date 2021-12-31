@@ -24,7 +24,7 @@ namespace boundary
     double ConditionBig::Omega_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = -theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / dx + gamma->get_value({sigma, r})) - 1;
-        //std::cout <<"Omega_N: "<<res<<std::endl;
+        // std::cout <<"Omega_N: "<<res<<std::endl;
         return res;
     }
 
@@ -32,77 +32,77 @@ namespace boundary
                               dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / dx + gamma->get_value({sigma, r})) - 1;
-        //std::cout <<"aN: "<<res<<std::endl;
+//        std::cout <<"aN: "<<res<<std::endl;
         return res;
     }
 
     double ConditionBig::b_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = -theta * dt * (beta->get_value({sigma, r}) / dx + 2*alpha->get_value({sigma, r}) / pow(dx, 2.0));
-        //std::cout <<"bN: "<<res<<std::endl;
+//        std::cout <<"bN: "<<res<<std::endl;
         return res;
     }
 
     double ConditionBig::c_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = -(1 - theta) * dt * (beta->get_value({sigma, r}) / dx + 2*alpha->get_value({sigma, r}) / pow(dx, 2.0));
-        //std::cout <<"cN: "<<res<<std::endl;
+//        std::cout <<"cN: "<<res<<std::endl;
         return res;
     }
 
     double ConditionBig::d_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0));
-        //std::cout <<"dN: "<<res<<std::endl;
+//        std::cout <<"dN: "<<res<<std::endl;
         return res;
     }
 
     double ConditionBig::e_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0));
-        //std::cout <<"eN: "<<res<<std::endl;
+//        std::cout <<"eN: "<<res<<std::endl;
         return res;
     }
 
     double ConditionSmall::Omega_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = -theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / dx + gamma->get_value({sigma, r})) - 1;
-        //std::cout <<"Omega_0: "<<res<<std::endl;
+//        std::cout <<"Omega_0: "<<res<<std::endl;
         return res;
     }
 
     double ConditionSmall::a_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / dx + gamma->get_value({sigma, r})) - 1;
-        //std::cout <<"a_0: "<<res<<std::endl;
+//        std::cout <<"a_0: "<<res<<std::endl;
         return res;
     }
 
     double ConditionSmall::b_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (beta->get_value({sigma, r}) / dx - 2*alpha->get_value({sigma, r}) / pow(dx, 2.0));
-        //std::cout <<"b_0: "<<res<<std::endl;
+//        std::cout <<"b_0: "<<res<<std::endl;
         return res;
     }
 
     double ConditionSmall::c_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (beta->get_value({sigma, r}) / dx - 2*alpha->get_value({sigma, r}) / pow(dx, 2.0));
-        //std::cout <<"c_0: "<<res<<std::endl;
+//        std::cout <<"c_0: "<<res<<std::endl;
         return res;
     }
 
     double ConditionSmall::d_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0));
-        //std::cout <<"d_0: "<<res<<std::endl;
+//        std::cout <<"d_0: "<<res<<std::endl;
         return res;
     }
 
     double ConditionSmall::e_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0));
-        //std::cout <<"e_0: "<<res<<std::endl;
+//        std::cout <<"e_0: "<<res<<std::endl;
         return res;
     }
 
@@ -149,6 +149,8 @@ namespace boundary
         res[length - 1] = ConditionSmall::Omega_0(theta, dt, dx, sigma, r, alpha, beta, gamma);
         return res;
     }
+
+
 
     ConditionBig::~ConditionBig()
     {

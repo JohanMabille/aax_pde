@@ -29,16 +29,23 @@ namespace mesh
 
     void Mesh::run()
     {
-        std::vector<double> spot_axis = initiate_spot_values(m_S0, m_sigma, m_maturity, m_nb_steps_space);
-        std::cout << "Spot vector: " << std::endl;
+        std::vector<double> log_spot_axis = initiate_spot_values(m_S0, m_sigma, m_maturity, m_nb_steps_space);
+        std::vector<double> spot_axis;
+        spot_axis.reserve(log_spot_axis.size());
+        for(size_t i = 0; i < log_spot_axis.size(); ++i)
+        {
+            spot_axis.push_back(std::exp(log_spot_axis[i]));
+        }
 
-        payoff::print_vector(spot_axis);
+        // std::cout << "Spot vector: " << std::endl;
+
+        // payoff::print_vector(spot_axis);
 
         std::vector<double> Xt1 = m_pf->compute_payoff(spot_axis);
 
         m_dt = m_maturity / m_nb_steps_time;
 
-        //grid_res.push_back(Xt1); à rajouter comme la première colonne doit etre le payoff?
+        grid_res.push_back(Xt1); //à rajouter comme la première colonne doit etre le payoff?
 
         for (int i=0; i<m_nb_steps_time; ++i)
         {
@@ -47,8 +54,8 @@ namespace mesh
             system_matrix::MatrixSystem matrix_system(m_alpha, m_beta, m_gamma, m_delta, m_theta, m_dt, m_dx, m_sigma, m_r, time, m_bound_small,
                                                       m_bound_big, Xt1, spot_axis[0], spot_axis[spot_axis.size() - 1]);
 
-            std::cout << "Column X" << i << ": " <<  std::endl;
-            payoff::print_vector(Xt1);
+            // std::cout << "Column X" << i << ": " <<  std::endl;
+            // payoff::print_vector(Xt1);
 
             Xt1 = matrix_system.solve();
             grid_res.push_back(Xt1);
