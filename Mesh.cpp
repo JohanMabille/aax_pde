@@ -29,7 +29,14 @@ namespace mesh
 
     void Mesh::run()
     {
-        std::vector<double> spot_axis = initiate_spot_values(m_S0, m_sigma, m_maturity, m_nb_steps_space);
+        std::vector<double> log_spot_axis = initiate_spot_values(m_S0, m_sigma, m_maturity, m_nb_steps_space);
+        std::vector<double> spot_axis;
+        spot_axis.reserve(log_spot_axis.size());
+        for(size_t i = 0; i < log_spot_axis.size(); ++i)
+        {
+            spot_axis.push_back(std::exp(log_spot_axis[i]));
+        }
+
         std::cout << "Spot vector: " << std::endl;
 
         payoff::print_vector(spot_axis);
@@ -38,7 +45,7 @@ namespace mesh
 
         m_dt = m_maturity / m_nb_steps_time;
 
-        //grid_res.push_back(Xt1); à rajouter comme la première colonne doit etre le payoff?
+        grid_res.push_back(Xt1); //à rajouter comme la première colonne doit etre le payoff?
 
         for (int i=0; i<m_nb_steps_time; ++i)
         {
