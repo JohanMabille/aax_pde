@@ -16,7 +16,7 @@ void test_mesh()
     double theta = 0.5;
     double maturity = 1;
     int nb_steps_time = maturity*52;
-    int nb_steps_space = 10;
+    int nb_steps_space = 11;
     double r = 0.;
     payoff::Payoff *pf = new payoff::Call(K);
     boundary::BoundaryCondition *b_small = new boundary::ConditionSmall();
