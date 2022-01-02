@@ -18,13 +18,12 @@ namespace mesh
              payoff::Payoff*& pf, boundary::BoundaryCondition*& bound_small, boundary::BoundaryCondition*& bound_big,
              coef_eq::CoefEquation*& alpha, coef_eq::CoefEquation*& beta, coef_eq::CoefEquation*& gamma, coef_eq::CoefEquation*& delta);
         ~Mesh () = default;
-        std::vector<double> initiate_spot_values(double S0, double sigma, double maturity, int nb_steps_space);
-        void run();
-        double get_price();
+        void run(bool bumped = false);
+        double get_price(bool bumped = false);
         double get_delta();
         double get_gamma();
         double get_theta();
-        double get_vega(double bumbed_sigma);
+        double get_vega();
 
     private:
         double m_S0;
@@ -47,6 +46,11 @@ namespace mesh
         boundary::BoundaryCondition* m_bound_big;
         std::vector<std::vector<double>> grid_res;
         std::vector<std::vector<double>> grid_res_bumped_sigma;
+
+        double get_price(std::vector<std::vector<double>> grid);
+        std::vector<std::vector<double>> main_run();
+        std::vector<double> initiate_spot_values(double S0, double sigma, double maturity, int nb_steps_space);
+
 
     };
 
