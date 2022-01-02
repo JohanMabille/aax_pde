@@ -31,11 +31,12 @@ namespace mesh
     {
         if (bumped)
         {
-            grid_res = main_run();
+            grid_res_bumped_sigma = main_run();
+
         }
         else
         {
-            grid_res_bumped_sigma = main_run();
+            grid_res = main_run();
         }
     }
 
@@ -53,8 +54,8 @@ namespace mesh
 
         m_dt = m_maturity / m_nb_steps_time;
 
-        // grid_res.push_back(Xt1); //à rajouter comme la première colonne doit etre le payoff? inutilefffffffffffff
-
+        // grid_res.push_back(Xt1); //à rajouter comme la première colonne doit etre le payoff? inutile
+        std::vector<std::vector<double>> grid;
         for (int i=0; i<m_nb_steps_time; ++i)
         {
             std::cout << "Loop number: " << i << std::endl;
@@ -63,16 +64,21 @@ namespace mesh
                                                       m_bound_big, Xt1, spot_axis[0], spot_axis[spot_axis.size() - 1]);
 
             Xt1 = matrix_system.solve();
-            grid_res.push_back(Xt1);
-
+            grid.push_back(Xt1);
         }
-
+        return grid;
     }
 
     double Mesh::get_price(bool bumped)
     {
-        if (bumped){ return get_price(grid_res_bumped_sigma);}
-        else {return get_price(grid_res);}
+        if (bumped)
+        {
+            return get_price(grid_res_bumped_sigma);
+        }
+        else
+        {
+            return get_price(grid_res);
+        }
     }
 
     double Mesh::get_price(std::vector<std::vector<double>> grid)
