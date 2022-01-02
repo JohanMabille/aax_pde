@@ -3,6 +3,7 @@
 #include "BoundaryCondition.h"
 #include <vector>
 #include <cmath>
+#include <iostream>
 #include "eigen-3.4.0/Eigen/Dense"
 
 namespace system_matrix
@@ -10,53 +11,59 @@ namespace system_matrix
     //i != 0, i!=N
 
     // on peut enlever la dépendance en i de tous les coeff de la matrice coeur
-    double MatrixSystem::Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
+    double MatrixSystem::Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = theta * dt * (2*alpha.get_value({sigma, r}) / pow(dx, 2.0) - gamma.get_value({sigma, r})) - 1;
+        double res = theta * dt * (2*alpha->get_value({sigma, r}) / pow(dx, 2.0) - gamma->get_value({sigma, r})) - 1;
+        // std::cout <<"Omega: "<<res<<std::endl;
         return res;
     }
 
 
-    double MatrixSystem::a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
+    double MatrixSystem::a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = (1 - theta) * dt * (-2*alpha.get_value({sigma, r}) / pow(dx, 2.0) + gamma.get_value({sigma, r})) - 1;
+        double res = (1 - theta) * dt * (-2*alpha->get_value({sigma, r}) / pow(dx, 2.0) + gamma->get_value({sigma, r})) - 1;
+        // std::cout <<"a: "<<res<<std::endl;
+
         return res;
     }
 
-    double MatrixSystem::b_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
+    double MatrixSystem::b_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = theta * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) - beta.get_value({sigma, r}) / 2*dx);
+        double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
+        // std::cout <<"b: "<<res<<std::endl;
         return res;
     }
 
-    double MatrixSystem::c_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
+    double MatrixSystem::c_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = theta * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) + beta.get_value({sigma, r}) / 2*dx);
+        double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
+        // std::cout <<"c: "<<res<<std::endl;
         return res;
     }
 
-    double MatrixSystem::d_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
+    double MatrixSystem::d_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = (1 - theta) * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) + beta.get_value({sigma, r}) / 2*dx);
+        double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
+        // std::cout <<"d: "<<res<<std::endl;
         return res;
     }
 
-    double MatrixSystem::e_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const
+    double MatrixSystem::e_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = (1 - theta) * dt * (alpha.get_value({sigma, r}) / pow(dx, 2.0) - beta.get_value({sigma, r}) / 2*dx);
+        double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
+        // std::cout <<"e: "<<res<<std::endl;
         return res;
     }
 
     //i = 0
 
 
-    MatrixSystem::MatrixSystem(coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma, coef_eq::CoefEquation delta,
+    MatrixSystem::MatrixSystem(coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma, coef_eq::CoefEquation* delta,
                      double theta, double dt, double dx, double sigma, double r, double time,
-                     boundary::BoundaryCondition boundary_small_spot, boundary::BoundaryCondition boundary_big_spot,
-                     std::vector<double> Xt1)
+                     boundary::BoundaryCondition *boundary_small_spot, boundary::BoundaryCondition *boundary_big_spot,
+                     std::vector<double> Xt1, double spot_min, double spot_max)
     {
         int N = Xt1.size();
-
         //Omega*Xt = A'*Xt+1 + A''*Xt +b <==> m_A*Xt = m_b | avec m_A = (Omega - A'') et m_b = A'*Xt+1 + b
         Eigen::MatrixXd A_prime(N,N);
         Eigen::MatrixXd A_second(N,N);
@@ -66,30 +73,39 @@ namespace system_matrix
 
         // ######### boundaries #########
 
-        double small_spot = 0;
-        double big_spot = 1000;
-        std::vector<std::vector<double>> cond_small = boundary_small_spot.get_conditions(time, small_spot, N, theta,  dt,  dx,  sigma,  r,
+        std::vector<std::vector<double>> cond_small = boundary_small_spot -> get_conditions(time, spot_min, N, theta,  dt,  dx,  sigma,  r,
                                                         alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
-        std::vector<std::vector<double>> cond_big = boundary_big_spot.get_conditions(time, big_spot, N, theta,  dt,  dx,  sigma,  r,
+        std::vector<std::vector<double>> cond_big = boundary_big_spot -> get_conditions(time, spot_max, N, theta,  dt,  dx,  sigma,  r,
                                                         alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
 
         for (int j=0; j < N; ++j) // on remplit la matrice en bouclant sur les colonnes
         {
-            A_prime(0,j) = cond_big[0][j];
-            A_prime(N,j) = cond_small[0][j];
-            A_second(0,j) = cond_big[1][j];
-            A_second(N,j) = cond_small[1][j];
+            A_second(0,j) = cond_big[0][j];
+            A_second(N-1,j) = cond_small[0][j];
+            A_prime(0,j) = cond_big[1][j];
+            A_prime(N-1,j) = cond_small[1][j];
+
         }
 
-        Omega_matrix(0,0) = cond_big[2][0];
-        Omega_matrix(N,N) = cond_small[2][0];
 
         // ######### body #########
         // Omega
-        for (int i=1; i<N-1; ++i)
+
+
+        for (int i=0; i<N; ++i)
         {
+            for (int j=0; j<N; ++j)
+            {
+                Omega_matrix(i,j) = 0.0;
+            }
+
             Omega_matrix(i,i) = Omega(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
+
         }
+
+
+        Omega_matrix(0,0) = cond_big[2][0];
+        Omega_matrix(N-1,N-1) = cond_small[2][N-1];
 
         // A'
         for (int i=1; i < N-1; ++i)
@@ -127,10 +143,19 @@ namespace system_matrix
             }
         }
 
+//        std::cout << "A_prime: " << std::endl;
+//        std::cout << A_prime << std::endl;
+//        std::cout << "A_second: " << std::endl;
+//        std::cout << A_second << std::endl;
+//        std::cout << "Omega: " << std::endl;
+//        std::cout << Omega_matrix << std::endl;
+
+
+
         // b'
         for (int i=0; i < N; ++i)
         {
-            b(i,1) = delta.get_value({sigma, r}) * dt;
+            b(i,0) = delta->get_value({sigma, r}) * dt;
         }
 
         // ######### Computations to set up system #########
@@ -140,6 +165,7 @@ namespace system_matrix
 
     std::vector<double> MatrixSystem::solve()
     {
+
         Eigen::VectorXd res_vec = m_A.inverse() * m_b;
 
         std::vector<double> result;
@@ -148,6 +174,8 @@ namespace system_matrix
 
         return result;
     }
+
+
 
 
 }

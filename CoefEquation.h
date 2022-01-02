@@ -4,10 +4,10 @@
 
 namespace coef_eq
 {
-    class CoefEquation //Classe mère
+    class CoefEquation
     {
     public:
-        virtual double get_value(std::vector<double> args) const;
+        virtual double get_value(std::vector<double> args) const = 0;
     };
 
     class Alpha: public CoefEquation

@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <cmath>
 
 
 namespace payoff
@@ -24,7 +25,7 @@ namespace payoff
     std::vector<double> Call::compute_payoff(std::vector<double>& S) const
     {
         std::vector<double> res(S.size());
-        std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., x - m_strike);});
+        std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., x - m_strike);}); // TODO check exp
         return res;
     }
 

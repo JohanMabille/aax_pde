@@ -36,6 +36,8 @@ namespace payoff
     };
 
     void test_payoff();
+    void print_vector(const std::vector<double>& v);
+
 
 }
 #endif // PAYOFF_H_INCLUDED
