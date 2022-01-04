@@ -118,7 +118,7 @@ namespace mesh
     {
         double h1 = m_S0 * (1 - std::exp(-m_dx));
         double h2 = m_S0 * (std::exp(m_dx) - 1);
-        double denom = h1 * h2 * (h2 - h1);
+        double denom = h1 * h2 * (h2 + h1);
         double num;
         if (m_nb_steps_space % 2 == 1)
         {
@@ -130,6 +130,8 @@ namespace mesh
             int index = m_nb_steps_space / 2;
             num = h1 * grid_res[m_nb_steps_time - 1][index - 1] - h1 * h2 * get_price() + h2 * grid_res[m_nb_steps_time - 1][index];
         }
+        std::cout << "dx : " << m_dx << " / " << std::exp(-m_dx) << " / " << std::exp(m_dx) << std::endl;
+        std::cout << "h1 : " << h1 << "/ h2 : " << h2 << std::endl;
         std::cout << num << " / " << denom << std::endl;
         return num / denom;
     }

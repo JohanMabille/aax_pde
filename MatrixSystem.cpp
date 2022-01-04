@@ -8,13 +8,9 @@
 
 namespace system_matrix
 {
-    //i != 0, i!=N
-
-    // on peut enlever la dépendance en i de tous les coeff de la matrice coeur
     double MatrixSystem::Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (2*alpha->get_value({sigma, r}) / pow(dx, 2.0) - gamma->get_value({sigma, r})) - 1;
-        // std::cout <<"Omega: "<<res<<std::endl;
         return res;
     }
 
@@ -22,36 +18,30 @@ namespace system_matrix
     double MatrixSystem::a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (-2*alpha->get_value({sigma, r}) / pow(dx, 2.0) + gamma->get_value({sigma, r})) - 1;
-        // std::cout <<"a: "<<res<<std::endl;
-
         return res;
     }
 
     double MatrixSystem::b_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
-        // std::cout <<"b: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::c_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
-        // std::cout <<"c: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::d_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
-        // std::cout <<"d: "<<res<<std::endl;
         return res;
     }
 
     double MatrixSystem::e_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
         double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
-        // std::cout <<"e: "<<res<<std::endl;
         return res;
     }
 
@@ -65,10 +55,10 @@ namespace system_matrix
     {
         int N = Xt1.size();
         //Omega*Xt = A'*Xt+1 + A''*Xt +b <==> m_A*Xt = m_b | avec m_A = (Omega - A'') et m_b = A'*Xt+1 + b
-        Eigen::MatrixXd A_prime(N,N);
-        Eigen::MatrixXd A_second(N,N);
-        Eigen::MatrixXd Omega_matrix(N,N);
-        Eigen::MatrixXd b(N,1);
+        Eigen::MatrixXd A_prime = Eigen::MatrixXd::Zero(N, N);
+        Eigen::MatrixXd A_second = Eigen::MatrixXd::Zero(N, N);
+        Eigen::MatrixXd Omega_matrix = Eigen::MatrixXd::Zero(N, N);
+        Eigen::MatrixXd b(N, 1);
         Eigen::VectorXd Xt1_matrix = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(Xt1.data(), Xt1.size()); // from std::vect to eigen::vect
 
         // ######### boundaries #########
@@ -87,20 +77,12 @@ namespace system_matrix
 
         }
 
-
         // ######### body #########
         // Omega
 
-
         for (int i=0; i<N; ++i)
         {
-            for (int j=0; j<N; ++j)
-            {
-                Omega_matrix(i,j) = 0.0;
-            }
-
             Omega_matrix(i,i) = Omega(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
-
         }
 
 
@@ -110,52 +92,22 @@ namespace system_matrix
         // A'
         for (int i=1; i < N-1; ++i)
         {
-            for (int j=0; j < i-1; ++j)
-            {
-                A_prime(i, j) = 0;
-            }
-
             A_prime(i, i-1) = e_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
             A_prime(i, i) = a_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
             A_prime(i, i+1) = d_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
-
-            for (int j=i+2; j < N; ++j)
-            {
-                A_prime(i, j) = 0;
-            }
         }
 
         // A''
         for (int i=1; i < N-1; ++i)
         {
-            for (int j=0; j < i-1; ++j) //à optimiser ?
-            {
-                A_second(i, j) = 0;
-            }
-
             A_second(i, i-1) = b_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
-            A_second(i, i) = 0;
             A_second(i, i+1) = c_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
-
-            for (int j=i+2; j < N; ++j)
-            {
-                A_second(i, j) = 0;
-            }
         }
-
-//        std::cout << "A_prime: " << std::endl;
-//        std::cout << A_prime << std::endl;
-//        std::cout << "A_second: " << std::endl;
-//        std::cout << A_second << std::endl;
-//        std::cout << "Omega: " << std::endl;
-//        std::cout << Omega_matrix << std::endl;
-
-
 
         // b'
         for (int i=0; i < N; ++i)
         {
-            b(i,0) = delta->get_value({sigma, r}) * dt;
+            b(i,0) = delta->get_value({sigma, r}) * dt; // to generalize, all parameters should be sent to get values. The method would sort between what it needs and what it doesn't need.
         }
 
         // ######### Computations to set up system #########
