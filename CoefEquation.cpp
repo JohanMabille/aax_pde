@@ -31,4 +31,3 @@ namespace coef_eq
     }
 
 }
-

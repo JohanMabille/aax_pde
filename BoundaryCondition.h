@@ -13,19 +13,23 @@ namespace boundary
         BoundaryCondition() = default;
 //        virtual ~BoundaryCondition() = 0;
         ~BoundaryCondition();
-        std::vector<std::vector<double>> get_conditions(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                        coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const; //calcul des conditions aux bornes à chaque itération
+        std::vector<std::vector<double>> get_conditions(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                        coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                        double spot_min, double spot_max, double S0, double maturity) const; //calcul des conditions aux bornes à chaque itération
         //Potential TODO: calculer les conditions aux bornes d'un coup
 
     protected:
-        virtual std::vector<double> get_coef_Xt(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const =0;
+        virtual std::vector<double> get_coef_Xt(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                double spot_min, double spot_max, double S0, double maturity) const =0;
 
-        virtual std::vector<double> get_coef_Xt1(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                    coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const = 0;
+        virtual std::vector<double> get_coef_Xt1(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                double spot_min, double spot_max, double S0, double maturity) const = 0;
 
-        virtual std::vector<double> get_coef_diag(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                    coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const =0;
+        virtual std::vector<double> get_coef_diag(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                    coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                    double spot_min, double spot_max, double S0, double maturity) const =0;
     };
 
 
@@ -36,22 +40,31 @@ namespace boundary
         ~ConditionSmall();
 
     protected:
-        virtual std::vector<double> get_coef_Xt(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const override;
+        virtual std::vector<double> get_coef_Xt(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                        coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                        double spot_min, double spot_max, double S0, double maturity) const override;
 
-        virtual std::vector<double> get_coef_Xt1(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                    coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const override;
+        virtual std::vector<double> get_coef_Xt1(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                        coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                        double spot_min, double spot_max, double S0, double maturity) const override;
 
-        virtual std::vector<double> get_coef_diag(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                    coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const override;
+        virtual std::vector<double> get_coef_diag(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                        coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                        double spot_min, double spot_max, double S0, double maturity) const override;
 
     private:
-        double Omega_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double a_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double b_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double c_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double d_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double e_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
+        double Omega_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                        double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double a_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                        double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double b_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                        double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double c_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                        double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double d_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                        double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double e_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                        double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
     };
 
 
@@ -62,21 +75,30 @@ namespace boundary
         ~ConditionBig();
 
     protected:
-        virtual std::vector<double> get_coef_Xt(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const override;
+        virtual std::vector<double> get_coef_Xt(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                        coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                        double spot_min, double spot_max, double S0, double maturity) const override;
 
-        virtual std::vector<double> get_coef_Xt1(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                    coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const override;
+        virtual std::vector<double> get_coef_Xt1(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                        coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                        double spot_min, double spot_max, double S0, double maturity) const override;
 
-        virtual std::vector<double> get_coef_diag(int time, double space, int length, double theta, double dt, double dx, double sigma, double r,
-                                                    coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const override;
+        virtual std::vector<double> get_coef_diag(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
+                                                        coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                                        double spot_min, double spot_max, double S0, double maturity) const override;
     private:
-        double Omega_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double a_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double b_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double c_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double d_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
-        double e_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
+        double Omega_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double a_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double b_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double c_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double d_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
+        double e_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
+                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const;
 
     };
 }
