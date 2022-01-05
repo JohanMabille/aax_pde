@@ -10,15 +10,17 @@ namespace boundary
     class BoundaryCondition
     {
     public:
-        BoundaryCondition() = default;
-//        virtual ~BoundaryCondition() = 0;
-        ~BoundaryCondition();
+        virtual ~BoundaryCondition() = default;
         std::vector<std::vector<double>> get_conditions(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
                                                         coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                                         double spot_min, double spot_max, double S0, double maturity) const; //calcul des conditions aux bornes à chaque itération
-        //Potential TODO: calculer les conditions aux bornes d'un coup
+
+        BoundaryCondition& operator=(const BoundaryCondition&) = delete;
+        BoundaryCondition(const BoundaryCondition&&) = delete;
+        BoundaryCondition& operator=(BoundaryCondition&) = delete;
 
     protected:
+        BoundaryCondition() = default;
         virtual std::vector<double> get_coef_Xt(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
                                                 coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                                 double spot_min, double spot_max, double S0, double maturity) const =0;
@@ -37,7 +39,7 @@ namespace boundary
     {
 
     public:
-        ~ConditionSmall();
+        ConditionSmall() = default;
 
     protected:
         virtual std::vector<double> get_coef_Xt(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
@@ -72,7 +74,7 @@ namespace boundary
     {
 
     public:
-        ~ConditionBig();
+        ConditionBig() = default;
 
     protected:
         virtual std::vector<double> get_coef_Xt(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,

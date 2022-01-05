@@ -15,24 +15,22 @@ double roundoff(double value)
 
 void print_grid(std::vector<std::vector<double>> grid)
 {
-    for (int i = 0; i < grid.size(); i++)
+    for (int i = 0; i < (int)grid.size(); i++)
     {
         payoff::print_vector(grid[i]);
     }
 }
 
-
-
 void test_mesh()
 {
     // params
     double S = 100.;
-    double K = 100.;
+    double K = 120.;
     double sigma = 0.16;
     double theta = 0.5;
-    double maturity = 0.5;
-    int nb_steps_time = maturity * 365;
-    int nb_steps_space = 101.;
+    double maturity = 0.25;
+    int nb_steps_time = maturity * 1000;
+    int nb_steps_space = 501.;
     double r = 0.03;
     payoff::Payoff *pf = new payoff::Call(K);
     boundary::BoundaryCondition *b_small = new boundary::ConditionSmall();

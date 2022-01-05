@@ -14,7 +14,7 @@ namespace system_matrix
         MatrixSystem(coef_eq::CoefEquation *alpha, coef_eq::CoefEquation *beta, coef_eq::CoefEquation* gamma, coef_eq::CoefEquation* delta,
                      double theta, double dt, double dx, double sigma, double r,
                      boundary::BoundaryCondition* boundary_small_spot, boundary::BoundaryCondition* boundary_big_spot,
-                     std::vector<double> Xt1, double spot_min, double spot_max, double S0, double loop, double maturity);
+                     std::vector<double> Xt1, double spot_min, double spot_max, double S0, int loop, double maturity);
         ~MatrixSystem() = default;
         std::vector<double> solve();
 
@@ -25,7 +25,7 @@ namespace system_matrix
 
         // not used yet but can be useful if coeff equations become variables
         double m_S0;
-        double m_loop;
+        int m_loop;
         double m_maturity;
         double m_spot_min;
         double m_spot_max;

@@ -64,7 +64,7 @@ namespace mesh
         grid.push_back(Xt1);
         for (int i=0; i<m_nb_steps_time; ++i)
         {
-            std::cout << "Loop number: " << i << std::endl;
+            // std::cout << "Loop number: " << i << std::endl;
             system_matrix::MatrixSystem matrix_system(m_alpha, m_beta, m_gamma, m_delta, m_theta, m_dt, m_dx, m_sigma, m_r, m_bound_small,
                                                       m_bound_big, Xt1, spot_axis[0], spot_axis[spot_axis.size() - 1], m_S0, i, m_maturity);
 
@@ -176,7 +176,7 @@ namespace mesh
 
     double Mesh::get_vega()
     {
-        double bump = 0.01;
+        double bump = 0.001;
         if (!vega_computed)
         {
             // relaunch pricing with bumped vol

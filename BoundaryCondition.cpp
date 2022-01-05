@@ -17,15 +17,10 @@ namespace boundary
         return conditions;
     }
 
-    BoundaryCondition::~BoundaryCondition()
-    {
-        std::cout << "BC destructor" << std::endl;
-    }
-
     double ConditionBig::Omega_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                  double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = -theta * dt * (alpha->get_value(args) / pow(dx, 2.0) + beta->get_value(args) / dx + gamma->get_value(args)) - 1;
         return res;
     }
@@ -34,7 +29,7 @@ namespace boundary
                               dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = (1 - theta) * dt * (alpha->get_value(args) / pow(dx, 2.0) + beta->get_value(args) / dx + gamma->get_value(args)) - 1;
         return res;
     }
@@ -42,7 +37,7 @@ namespace boundary
     double ConditionBig::b_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                               double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = -theta * dt * (beta->get_value(args) / dx + 2*alpha->get_value(args) / pow(dx, 2.0));
         return res;
     }
@@ -50,7 +45,7 @@ namespace boundary
     double ConditionBig::c_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                               double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = -(1 - theta) * dt * (beta->get_value(args) / dx + 2*alpha->get_value(args) / pow(dx, 2.0));
         return res;
     }
@@ -58,7 +53,7 @@ namespace boundary
     double ConditionBig::d_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                               double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = theta * dt * (alpha->get_value(args) / pow(dx, 2.0));
         return res;
     }
@@ -66,7 +61,7 @@ namespace boundary
     double ConditionBig::e_N(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                               double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = (1 - theta) * dt * (alpha->get_value(args) / pow(dx, 2.0));
         return res;
     }
@@ -74,7 +69,7 @@ namespace boundary
     double ConditionSmall::Omega_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                     double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = -theta * dt * (alpha->get_value(args) / pow(dx, 2.0) - beta->get_value(args) / dx + gamma->get_value(args)) - 1;
         return res;
     }
@@ -82,7 +77,7 @@ namespace boundary
     double ConditionSmall::a_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = (1 - theta) * dt * (alpha->get_value(args) / pow(dx, 2.0) - beta->get_value(args) / dx + gamma->get_value(args)) - 1;
         return res;
     }
@@ -90,7 +85,7 @@ namespace boundary
     double ConditionSmall::b_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = theta * dt * (beta->get_value(args) / dx - 2*alpha->get_value(args) / pow(dx, 2.0));
         return res;
     }
@@ -98,7 +93,7 @@ namespace boundary
     double ConditionSmall::c_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = (1 - theta) * dt * (beta->get_value(args) / dx - 2*alpha->get_value(args) / pow(dx, 2.0));
         return res;
     }
@@ -106,7 +101,7 @@ namespace boundary
     double ConditionSmall::d_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = theta * dt * (alpha->get_value(args) / pow(dx, 2.0));
         return res;
     }
@@ -114,18 +109,10 @@ namespace boundary
     double ConditionSmall::e_0(double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
                                 double spot_min, double spot_max, double S0, double maturity, int time, int space) const
     {
-        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, time, space};
+        std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)time, (double)space};
         double res = (1 - theta) * dt * (alpha->get_value(args) / pow(dx, 2.0));
         return res;
     }
-
-
-
-    ConditionSmall::~ConditionSmall()
-    {
-        std::cout << "BC Small destructor" << std::endl;
-    }
-
 
     std::vector<double> ConditionSmall::get_coef_Xt(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
                                                     coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma, double spot_min, double spot_max, double S0, double maturity) const
@@ -160,13 +147,6 @@ namespace boundary
         std::vector<double> res(length, 0.0);
         res[length - 1] = ConditionSmall::Omega_0(theta, dt, dx, sigma, r, alpha, beta, gamma, spot_min, spot_max, S0, maturity, time, space);
         return res;
-    }
-
-
-
-    ConditionBig::~ConditionBig()
-    {
-        std::cout << "BC Big destructor" << std::endl;
     }
 
     std::vector<double> ConditionBig::get_coef_Xt(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,

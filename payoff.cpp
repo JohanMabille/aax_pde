@@ -8,19 +8,9 @@
 
 namespace payoff
 {
-
-    // Call
-
     Call::Call(double K):m_strike(K)
     {
-        std::cout << "Call constructor" << std::endl;
     }
-
-    Call::~Call()
-    {
-        std::cout << "Call destructor" << std::endl;
-    }
-
 
     std::vector<double> Call::compute_payoff(std::vector<double>& S) const
     {
@@ -29,16 +19,8 @@ namespace payoff
         return res;
     }
 
-    // Put
-
     Put::Put(double K):m_strike(K)
     {
-        std::cout << "Put constructor" << std::endl;
-    }
-
-    Put::~Put()
-    {
-        std::cout << "Put destructor" << std::endl;
     }
 
 
@@ -48,7 +30,6 @@ namespace payoff
         std::transform(S.begin(), S.end(), res.begin(), [&](double x) {return std::max(0., m_strike - x);});
         return res;
     }
-
 
     // test
 
