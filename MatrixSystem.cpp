@@ -8,50 +8,56 @@
 
 namespace system_matrix
 {
-    double MatrixSystem::Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
+    double MatrixSystem::Omega(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = theta * dt * (2*alpha->get_value({sigma, r}) / pow(dx, 2.0) - gamma->get_value({sigma, r})) - 1;
+        std::vector<double> args = {sigma, r, dx, dt, m_maturity, m_S0, m_spot_min, m_spot_max, (double)m_loop, (double)i};
+        double res = theta * dt * (2*alpha->get_value(args) / pow(dx, 2.0) - gamma->get_value(args)) - 1;
         return res;
     }
 
 
-    double MatrixSystem::a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
+    double MatrixSystem::a_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = (1 - theta) * dt * (-2*alpha->get_value({sigma, r}) / pow(dx, 2.0) + gamma->get_value({sigma, r})) - 1;
+        std::vector<double> args = {sigma, r, dx, dt, m_maturity, m_S0, m_spot_min, m_spot_max, (double)m_loop, (double)i};
+        double res = (1 - theta) * dt * (-2*alpha->get_value(args) / pow(dx, 2.0) + gamma->get_value(args)) - 1;
         return res;
     }
 
-    double MatrixSystem::b_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
+    double MatrixSystem::b_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
+        std::vector<double> args = {sigma, r, dx, dt, m_maturity, m_S0, m_spot_min, m_spot_max, (double)m_loop, (double)i};
+        double res = theta * dt * (alpha->get_value(args) / pow(dx, 2.0) - beta->get_value(args) / (2*dx));
         return res;
     }
 
-    double MatrixSystem::c_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
+    double MatrixSystem::c_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = theta * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
+        std::vector<double> args = {sigma, r, dx, dt, m_maturity, m_S0, m_spot_min, m_spot_max, (double)m_loop, (double)i};
+        double res = theta * dt * (alpha->get_value(args) / pow(dx, 2.0) + beta->get_value(args) / (2*dx));
         return res;
     }
 
-    double MatrixSystem::d_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
+    double MatrixSystem::d_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) + beta->get_value({sigma, r}) / (2*dx));
+        std::vector<double> args = {sigma, r, dx, dt, m_maturity, m_S0, m_spot_min, m_spot_max, (double)m_loop, (double)i};
+        double res = (1 - theta) * dt * (alpha->get_value(args) / pow(dx, 2.0) + beta->get_value(args) / (2*dx));
         return res;
     }
 
-    double MatrixSystem::e_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
+    double MatrixSystem::e_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
-        double res = (1 - theta) * dt * (alpha->get_value({sigma, r}) / pow(dx, 2.0) - beta->get_value({sigma, r}) / (2*dx));
+        std::vector<double> args = {sigma, r, dx, dt, m_maturity, m_S0, m_spot_min, m_spot_max, (double)m_loop, (double)i};
+        double res = (1 - theta) * dt * (alpha->get_value(args) / pow(dx, 2.0) - beta->get_value(args) / (2*dx));
         return res;
     }
 
-    //i = 0
 
 
     MatrixSystem::MatrixSystem(coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma, coef_eq::CoefEquation* delta,
-                     double theta, double dt, double dx, double sigma, double r, double time,
+                     double theta, double dt, double dx, double sigma, double r,
                      boundary::BoundaryCondition *boundary_small_spot, boundary::BoundaryCondition *boundary_big_spot,
-                     std::vector<double> Xt1, double spot_min, double spot_max)
+                     std::vector<double> Xt1, double spot_min, double spot_max, double S0, int loop, double maturity):
+                         m_spot_min(spot_min), m_spot_max(spot_max), m_S0(S0), m_loop(loop), m_maturity(maturity)
     {
         int N = Xt1.size();
         //Omega*Xt = A'*Xt+1 + A''*Xt +b <==> m_A*Xt = m_b | avec m_A = (Omega - A'') et m_b = A'*Xt+1 + b
@@ -63,10 +69,10 @@ namespace system_matrix
 
         // ######### boundaries #########
 
-        std::vector<std::vector<double>> cond_small = boundary_small_spot -> get_conditions(time, spot_min, N, theta,  dt,  dx,  sigma,  r,
-                                                        alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
-        std::vector<std::vector<double>> cond_big = boundary_big_spot -> get_conditions(time, spot_max, N, theta,  dt,  dx,  sigma,  r,
-                                                        alpha, beta, gamma); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
+        std::vector<std::vector<double>> cond_small = boundary_small_spot -> get_conditions(loop, N, N, theta,  dt,  dx,  sigma,  r,
+                                                        alpha, beta, gamma, spot_min, spot_max, S0, maturity); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
+        std::vector<std::vector<double>> cond_big = boundary_big_spot -> get_conditions(loop, 0, N, theta,  dt,  dx,  sigma,  r,
+                                                        alpha, beta, gamma, spot_min, spot_max, S0, maturity); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
 
         for (int j=0; j < N; ++j) // on remplit la matrice en bouclant sur les colonnes
         {
@@ -82,7 +88,7 @@ namespace system_matrix
 
         for (int i=0; i<N; ++i)
         {
-            Omega_matrix(i,i) = Omega(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
+            Omega_matrix(i,i) = Omega(i, theta, dt, dx, sigma, r, alpha, beta, gamma);
         }
 
 
@@ -92,22 +98,24 @@ namespace system_matrix
         // A'
         for (int i=1; i < N-1; ++i)
         {
-            A_prime(i, i-1) = e_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
-            A_prime(i, i) = a_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
-            A_prime(i, i+1) = d_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
+            A_prime(i, i-1) = e_i(i, theta, dt, dx, sigma, r, alpha, beta, gamma);
+            A_prime(i, i) = a_i(i, theta, dt, dx, sigma, r, alpha, beta, gamma);
+            A_prime(i, i+1) = d_i(i, theta, dt, dx, sigma, r, alpha, beta, gamma);
         }
 
         // A''
         for (int i=1; i < N-1; ++i)
         {
-            A_second(i, i-1) = b_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
-            A_second(i, i+1) = c_i(static_cast<double>(i), theta, dt, dx, sigma, r, alpha, beta, gamma);
+            A_second(i, i-1) = b_i(i, theta, dt, dx, sigma, r, alpha, beta, gamma);
+            A_second(i, i+1) = c_i(i, theta, dt, dx, sigma, r, alpha, beta, gamma);
         }
 
         // b'
+
         for (int i=0; i < N; ++i)
         {
-            b(i,0) = delta->get_value({sigma, r}) * dt; // to generalize, all parameters should be sent to get values. The method would sort between what it needs and what it doesn't need.
+            std::vector<double> args = {sigma, r, dx, dt, maturity, S0, spot_min, spot_max, (double)loop, (double)i};
+            b(i,0) = delta->get_value(args) * dt;
         }
 
         // ######### Computations to set up system #########

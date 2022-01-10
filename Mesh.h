@@ -25,6 +25,8 @@ namespace mesh
         double get_theta();
         double get_vega();
 
+        std::vector<std::vector<double>> get_mesh(bool bumped = false);
+
     private:
         double m_S0;
         double m_sigma;

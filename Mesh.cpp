@@ -10,7 +10,12 @@ namespace mesh
              coef_eq::CoefEquation*& alpha, coef_eq::CoefEquation*& beta, coef_eq::CoefEquation*& gamma, coef_eq::CoefEquation*& delta)
              : m_S0(S0), m_sigma(sigma), m_maturity(maturity), m_nb_steps_space(nb_steps_space), m_nb_steps_time(nb_steps_time), m_theta(theta), m_r(r),
              m_pf(pf), m_bound_small(bound_small), m_bound_big(bound_big), m_alpha(alpha), m_beta(beta), m_gamma(gamma), m_delta(delta)
-             {}
+    {
+
+        grid_res.resize(m_nb_steps_time, std::vector<double>(m_nb_steps_space));
+        grid_res_bumped_sigma.resize(m_nb_steps_time, std::vector<double>(m_nb_steps_space));
+
+    }
 
     std::vector<double> Mesh::initiate_spot_values(double S0, double sigma, double maturity, int nb_steps)
     {
@@ -54,18 +59,20 @@ namespace mesh
 
         m_dt = m_maturity / m_nb_steps_time;
 
-        // grid_res.push_back(Xt1); //à rajouter comme la première colonne doit etre le payoff? inutile
+
         std::vector<std::vector<double>> grid;
+        grid.push_back(Xt1);
         for (int i=0; i<m_nb_steps_time; ++i)
         {
-            std::cout << "Loop number: " << i << std::endl;
-            double time = 0.0; // value test TODO: harmonize with the potential value needed in BoundaryCondition
-            system_matrix::MatrixSystem matrix_system(m_alpha, m_beta, m_gamma, m_delta, m_theta, m_dt, m_dx, m_sigma, m_r, time, m_bound_small,
-                                                      m_bound_big, Xt1, spot_axis[0], spot_axis[spot_axis.size() - 1]);
+            // std::cout << "Loop number: " << i << std::endl;
+            system_matrix::MatrixSystem matrix_system(m_alpha, m_beta, m_gamma, m_delta, m_theta, m_dt, m_dx, m_sigma, m_r, m_bound_small,
+                                                      m_bound_big, Xt1, spot_axis[0], spot_axis[spot_axis.size() - 1], m_S0, i, m_maturity);
 
             Xt1 = matrix_system.solve();
             grid.push_back(Xt1);
+
         }
+
         return grid;
     }
 
@@ -80,6 +87,21 @@ namespace mesh
             return get_price(grid_res);
         }
     }
+
+
+    std::vector<std::vector<double>> Mesh::get_mesh(bool bumped)
+    {
+        if (bumped)
+        {
+            return grid_res_bumped_sigma;
+
+        }
+        else
+        {
+            return grid_res;
+        }
+    }
+
 
     double Mesh::get_price(std::vector<std::vector<double>> grid)
     {
@@ -154,15 +176,15 @@ namespace mesh
 
     double Mesh::get_vega()
     {
+        double bump = 0.001;
         if (!vega_computed)
         {
             // relaunch pricing with bumped vol
-            m_sigma = m_sigma + 0.01;
+            m_sigma = m_sigma + bump;
             run(true);
             vega_computed = true;
         }
-        return get_price(true) - get_price(); // 1% vol move
+        return (get_price(true) - get_price())/bump; // 1% vol move
 
     }
 }
-
