@@ -28,20 +28,12 @@ void test_mesh()
     double K = 120.;
     double sigma = 0.16;
     double theta = 0.5;
-<<<<<<< HEAD
 
-    double maturity = 1;
-    int nb_steps_time = maturity*365;
-    int nb_steps_space = 100.;
-    double r = 0.05;
-
-
-=======
     double maturity = 0.25;
-    int nb_steps_time = maturity * 1000;
-    int nb_steps_space = 501.;
+    int nb_steps_time = maturity * 365;
+    int nb_steps_space = 101.;
     double r = 0.03;
->>>>>>> 71455175705a76c8ebc7861a3fc49364041309b8
+
     payoff::Payoff *pf = new payoff::Call(K);
     boundary::BoundaryCondition *b_small = new boundary::ConditionSmall();
     boundary::BoundaryCondition *b_big = new boundary::ConditionBig();
@@ -71,12 +63,12 @@ void test_mesh()
 
 //    std::cout << "\n ------------------GRID------------------ \n" << std::endl;
 //    print_grid(mesh_viz);
-    std::cout << "\n          PDE     ||   Closed form \n" << std::endl;
-    std::cout << "Price:     " << roundoff(price_pde) << "   ||" << "   " << roundoff(price_cf) << std::endl;
+    std::cout << "\n             PDE   ||   Closed form \n" << std::endl;
+    std::cout << "Price:     " << roundoff(price_pde) << "  ||" << "   " << roundoff(price_cf) << std::endl;
     std::cout << "Delta:     " << roundoff(delta_pde) << "  ||" << "   " << roundoff(delta_cf) << std::endl;
     std::cout << "Gamma:     " << roundoff(gamma_pde) << "  ||" << "   " << roundoff(gamma_cf) << std::endl;
-    std::cout << "Vega:      " << roundoff(vega_pde) << "   ||" << "   " << roundoff(vega_cf) << std::endl;
-    std::cout << "Theta:     " << roundoff(theta_pde) << " ||" << "   " << roundoff(theta_cf) << std::endl;
+    std::cout << "Vega:      " << roundoff(vega_pde) << "  ||" << "   " << roundoff(vega_cf) << std::endl;
+    std::cout << "Theta:     " << roundoff(theta_pde) << "  ||" << "   " << roundoff(theta_cf) << std::endl;
 
     delete pf;
     delete b_small;
