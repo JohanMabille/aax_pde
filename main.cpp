@@ -48,12 +48,13 @@ void test_mesh(double S, double K, double sigma, double theta, double maturity, 
 //    std::cout << "\n ------------------GRID------------------ \n" << std::endl;
 //    print_grid(mesh_viz);
 
-    std::cout << "\n          PDE     ||   Closed form \n" << std::endl;
-    std::cout << "Price:     " << roundoff(price_pde) << "   ||" << "   " << roundoff(price_cf) << std::endl;
+    std::cout << "\n             PDE   ||   Closed form \n" << std::endl;
+    std::cout << "Price:     " << roundoff(price_pde) << "  ||" << "   " << roundoff(price_cf) << std::endl;
+
     std::cout << "Delta:     " << roundoff(delta_pde) << "  ||" << "   " << roundoff(delta_cf) << std::endl;
     std::cout << "Gamma:     " << roundoff(gamma_pde) << "  ||" << "   " << roundoff(gamma_cf) << std::endl;
-    std::cout << "Vega:      " << roundoff(vega_pde) << "   ||" << "   " << roundoff(vega_cf) << std::endl;
-    std::cout << "Theta:     " << roundoff(theta_pde) << " ||" << "   " << roundoff(theta_cf) << std::endl;
+    std::cout << "Vega:      " << roundoff(vega_pde) << "  ||" << "   " << roundoff(vega_cf) << std::endl;
+    std::cout << "Theta:     " << roundoff(theta_pde) << "  ||" << "   " << roundoff(theta_cf) << std::endl;
 
     delete pf;
     delete b_small;
