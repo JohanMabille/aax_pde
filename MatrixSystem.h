@@ -19,11 +19,9 @@ namespace system_matrix
         std::vector<double> solve();
 
     private:
-        //Omega*Xt = A'*Xt+1 + A''*Xt +b <==> m_A*Xt = m_b
-        Eigen::MatrixXd m_A; //avec m_A = (Omega - A'')
-        Eigen::MatrixXd m_b; //et m_b = A'*Xt+1 + b
+        Eigen::MatrixXd m_A;
+        Eigen::MatrixXd m_b;
 
-        // not used yet but can be useful if coeff equations become variables
         double m_S0;
         int m_loop;
         double m_maturity;

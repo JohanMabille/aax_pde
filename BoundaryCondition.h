@@ -11,9 +11,10 @@ namespace boundary
     {
     public:
         virtual ~BoundaryCondition() = default;
+        //Boundary conditions computations at each iteration
         std::vector<std::vector<double>> get_conditions(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
                                                         coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma,
-                                                        double spot_min, double spot_max, double S0, double maturity) const; //calcul des conditions aux bornes à chaque itération
+                                                        double spot_min, double spot_max, double S0, double maturity) const;
 
         BoundaryCondition& operator=(const BoundaryCondition&) = delete;
         BoundaryCondition(const BoundaryCondition&&) = delete;

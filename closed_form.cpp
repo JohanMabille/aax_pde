@@ -98,6 +98,7 @@ namespace dauphine
 
 
     // Calculation of D1 and D2
+
     double d_j(const int j, const double S, const double K, const double r, const double v, const double T) {
       return (log(S/K) + (r + (pow(-1,j-1))*0.5*v*v)*T)/(v*(pow(T,0.5)));
     }
@@ -128,7 +129,6 @@ namespace dauphine
 
 
     // GREEKS PUT
-
 
     double put_delta(const double S, const double K, const double r, const double v, const double T) {
       return norm_cdf(d_j(1, S, K, r, v, T)) - 1;

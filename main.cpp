@@ -21,25 +21,10 @@ void print_grid(std::vector<std::vector<double>> grid)
     }
 }
 
-void test_mesh()
+void test_mesh(double S, double K, double sigma, double theta, double maturity, int nb_steps_time, int nb_steps_space, double r,
+               payoff::Payoff *pf, boundary::BoundaryCondition *b_small, boundary::BoundaryCondition *b_big, coef_eq::CoefEquation *alpha,
+                coef_eq::CoefEquation *beta, coef_eq::CoefEquation *gamma, coef_eq::CoefEquation *delta)
 {
-    // params
-    double S = 100.;
-    double K = 120.;
-    double sigma = 0.16;
-    double theta = 0.5;
-    double maturity = 0.25;
-    int nb_steps_time = maturity * 1000;
-    int nb_steps_space = 501.;
-    double r = 0.03;
-    payoff::Payoff *pf = new payoff::Call(K);
-    boundary::BoundaryCondition *b_small = new boundary::ConditionSmall();
-    boundary::BoundaryCondition *b_big = new boundary::ConditionBig();
-    coef_eq::CoefEquation *alpha = new coef_eq::Alpha();
-    coef_eq::CoefEquation *beta = new coef_eq::Beta();
-    coef_eq::CoefEquation *gamma = new coef_eq::Gamma();
-    coef_eq::CoefEquation *delta = new coef_eq::Delta();
-
 
     // pricing pde
     mesh::Mesh Mesh_call(S, sigma, maturity, nb_steps_space, nb_steps_time, theta, r, pf, b_small, b_big, alpha, beta, gamma, delta);
@@ -59,8 +44,10 @@ void test_mesh()
     double vega_cf = dauphine::call_vega(S,K,r,sigma,maturity);
     double theta_cf = dauphine::call_theta(S,K,r,sigma,maturity);
 
+    //               To uncomment to print the grid
 //    std::cout << "\n ------------------GRID------------------ \n" << std::endl;
 //    print_grid(mesh_viz);
+
     std::cout << "\n          PDE     ||   Closed form \n" << std::endl;
     std::cout << "Price:     " << roundoff(price_pde) << "   ||" << "   " << roundoff(price_cf) << std::endl;
     std::cout << "Delta:     " << roundoff(delta_pde) << "  ||" << "   " << roundoff(delta_cf) << std::endl;
@@ -75,5 +62,21 @@ void test_mesh()
 
 int main(int argc, const char * argv[])
 {
-    test_mesh();
+    double S = 100.;
+    double K = 120.;
+    double sigma = 0.16;
+    double theta = 0.5;
+    double maturity = 0.25;
+    int nb_steps_time = maturity * 1000;
+    int nb_steps_space = 501.;
+    double r = 0.03;
+    payoff::Payoff *pf = new payoff::Call(K);
+    boundary::BoundaryCondition *b_small = new boundary::ConditionSmall();
+    boundary::BoundaryCondition *b_big = new boundary::ConditionBig();
+    coef_eq::CoefEquation *alpha = new coef_eq::Alpha();
+    coef_eq::CoefEquation *beta = new coef_eq::Beta();
+    coef_eq::CoefEquation *gamma = new coef_eq::Gamma();
+    coef_eq::CoefEquation *delta = new coef_eq::Delta();
+
+    test_mesh(S, K,sigma, theta, maturity, nb_steps_time, nb_steps_space, r, pf, b_small, b_big, alpha, beta, gamma, delta);
 }

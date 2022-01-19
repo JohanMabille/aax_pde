@@ -37,12 +37,11 @@ namespace mesh
         int m_r;
         double m_dx;
         double m_dt;
-        bool vega_computed = false; //boolean pour savoir si on a déjà rempli la grille bumped vol
+        bool vega_computed = false; //boolean to know if the bumped vol grid has already been filled
         coef_eq::CoefEquation* m_alpha;
         coef_eq::CoefEquation* m_beta;
         coef_eq::CoefEquation* m_gamma;
         coef_eq::CoefEquation* m_delta;
-        // change to pointers
         payoff::Payoff* m_pf;
         boundary::BoundaryCondition* m_bound_small;
         boundary::BoundaryCondition* m_bound_big;

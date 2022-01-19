@@ -128,7 +128,6 @@ namespace boundary
 
     std::vector<double> ConditionSmall::get_coef_Xt1(int time, int space, int length, double theta, double dt, double dx, double sigma, double r,
                                                     coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma, double spot_min, double spot_max, double S0, double maturity) const
-
                                                     // (zeros, a0, c0, e0)
     {
         std::vector<double> res(length, 0.0);

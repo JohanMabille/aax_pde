@@ -60,21 +60,20 @@ namespace system_matrix
                          m_spot_min(spot_min), m_spot_max(spot_max), m_S0(S0), m_loop(loop), m_maturity(maturity)
     {
         int N = Xt1.size();
-        //Omega*Xt = A'*Xt+1 + A''*Xt +b <==> m_A*Xt = m_b | avec m_A = (Omega - A'') et m_b = A'*Xt+1 + b
         Eigen::MatrixXd A_prime = Eigen::MatrixXd::Zero(N, N);
         Eigen::MatrixXd A_second = Eigen::MatrixXd::Zero(N, N);
         Eigen::MatrixXd Omega_matrix = Eigen::MatrixXd::Zero(N, N);
         Eigen::MatrixXd b(N, 1);
-        Eigen::VectorXd Xt1_matrix = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(Xt1.data(), Xt1.size()); // from std::vect to eigen::vect
+        Eigen::VectorXd Xt1_matrix = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>(Xt1.data(), Xt1.size());
 
         // ######### boundaries #########
 
         std::vector<std::vector<double>> cond_small = boundary_small_spot -> get_conditions(loop, N, N, theta,  dt,  dx,  sigma,  r,
-                                                        alpha, beta, gamma, spot_min, spot_max, S0, maturity); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
+                                                        alpha, beta, gamma, spot_min, spot_max, S0, maturity);
         std::vector<std::vector<double>> cond_big = boundary_big_spot -> get_conditions(loop, 0, N, theta,  dt,  dx,  sigma,  r,
-                                                        alpha, beta, gamma, spot_min, spot_max, S0, maturity); // Vecteurs de 3 lignes : un pour la diag, un pour Xt et un pour Xt1
+                                                        alpha, beta, gamma, spot_min, spot_max, S0, maturity);
 
-        for (int j=0; j < N; ++j) // on remplit la matrice en bouclant sur les colonnes
+        for (int j=0; j < N; ++j)
         {
             A_second(0,j) = cond_big[0][j];
             A_second(N-1,j) = cond_small[0][j];
