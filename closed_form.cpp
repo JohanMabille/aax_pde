@@ -2,14 +2,24 @@
 #include <cmath>
 #include <limits>
 #include <algorithm>
+#define _USE_MATH_DEFINES
+#include <iostream>
+
 
 
 namespace dauphine
 {
-    double ncdf(double x)
+
+    double norm_cdf(double x)
     {
         return 0.5 * std::erfc(-x / std::sqrt(2));
     }
+
+    double norm_pdf(const double x) {
+      return (1.0/(pow(2*M_PI,0.5)))*exp(-0.5*x*x);
+    }
+
+
 
     double vanilla_payoff(double fwd, double strike, bool is_call)
     {
@@ -35,11 +45,11 @@ namespace dauphine
             double res;
             if(fwd > strike)
             {
-                res = strike * ncdf(-d2) - fwd * ncdf(-d1);
+                res = strike * norm_cdf(-d2) - fwd * norm_cdf(-d1);
             }
             else
             {
-                res = fwd * ncdf(d1) - strike * ncdf(d2);
+                res = fwd * norm_cdf(d1) - strike * norm_cdf(d2);
             }
             if(res <= std::numeric_limits<double>::min())
             {
@@ -83,5 +93,63 @@ namespace dauphine
         }
         return res;
     }
+
+
+
+
+    // Calculation of D1 and D2
+
+    double d_j(const int j, const double S, const double K, const double r, const double v, const double T) {
+      return (log(S/K) + (r + (pow(-1,j-1))*0.5*v*v)*T)/(v*(pow(T,0.5)));
+    }
+
+
+    // GREEKS CALL
+
+    double call_delta(const double S, const double K, const double r, const double v, const double T) {
+      return norm_cdf(d_j(1, S, K, r, v, T));
+    }
+
+    double call_gamma(const double S, const double K, const double r, const double v, const double T) {
+      return norm_pdf(d_j(1, S, K, r, v, T))/(S*v*sqrt(T));
+    }
+
+    double call_vega(const double S, const double K, const double r, const double v, const double T) {
+      return S*norm_pdf(d_j(1, S, K, r, v, T))*sqrt(T);
+    }
+
+    double call_theta(const double S, const double K, const double r, const double v, const double T) {
+      return (-(S*norm_pdf(d_j(1, S, K, r, v, T))*v)/(2*sqrt(T))
+        - r*K*exp(-r*T)*norm_cdf(d_j(2, S, K, r, v, T)))/365;
+    }
+
+    double call_rho(const double S, const double K, const double r, const double v, const double T) {
+      return K*T*exp(-r*T)*norm_cdf(d_j(2, S, K, r, v, T));
+    }
+
+
+    // GREEKS PUT
+
+    double put_delta(const double S, const double K, const double r, const double v, const double T) {
+      return norm_cdf(d_j(1, S, K, r, v, T)) - 1;
+    }
+
+    double put_gamma(const double S, const double K, const double r, const double v, const double T) {
+      return call_gamma(S, K, r, v, T); // Identical to call by put-call parity
+    }
+
+    double put_vega(const double S, const double K, const double r, const double v, const double T) {
+      return call_vega(S, K, r, v, T); // Identical to call by put-call parity
+    }
+
+    double put_theta(const double S, const double K, const double r, const double v, const double T) {
+      return (-(S*norm_pdf(d_j(1, S, K, r, v, T))*v)/(2*sqrt(T))
+        + r*K*exp(-r*T)*norm_cdf(-d_j(2, S, K, r, v, T)))/365;
+    }
+
+    double put_rho(const double S, const double K, const double r, const double v, const double T) {
+      return -T*K*exp(-r*T)*norm_cdf(-d_j(2, S, K, r, v, T));
+    }
+
 }
 

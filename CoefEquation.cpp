@@ -5,10 +5,6 @@
 
 namespace coef_eq
 {
-    double CoefEquation::get_value(std::vector<double> args) const
-    {
-        return 0.0;
-    }
 
     double Alpha::get_value(std::vector<double> args) const
     {
@@ -35,4 +31,3 @@ namespace coef_eq
     }
 
 }
-

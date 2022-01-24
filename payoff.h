@@ -9,17 +9,25 @@ namespace payoff
     class Payoff
     {
     public :
-        Payoff() = default;
+        virtual ~Payoff() = default;
+        Payoff& operator=(const Payoff&) = delete;
+        Payoff(const Payoff&&) = delete;
+        Payoff& operator=(Payoff&) = delete;
         virtual std::vector<double> compute_payoff (std::vector<double>& spot) const = 0;
-        ~Payoff() = default;
+
+
+    protected:
+        Payoff() = default;
+
     };
 
     class Call: public Payoff
     {
     public:
         Call(double K);
-        ~Call();
+        ~Call() = default;
         std::vector<double> compute_payoff (std::vector<double>& spot) const override;
+
     private :
         double m_strike;
     };
@@ -29,13 +37,15 @@ namespace payoff
     {
     public:
         Put(double K);
-        ~Put();
+        ~Put() = default;
         std::vector<double> compute_payoff (std::vector<double>& spot) const override;
     private :
         double m_strike;
     };
 
     void test_payoff();
+    void print_vector(const std::vector<double>& v);
+
 
 }
 #endif // PAYOFF_H_INCLUDED

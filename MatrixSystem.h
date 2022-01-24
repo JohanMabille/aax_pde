@@ -11,24 +11,29 @@ namespace system_matrix
     class MatrixSystem
     {
     public:
-        MatrixSystem(coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma, coef_eq::CoefEquation delta,
-                     double theta, double dt, double dx, double sigma, double r, double time,
-                     boundary::BoundaryCondition boundary_small_spot, boundary::BoundaryCondition boundary_big_spot,
-                     std::vector<double> Xt1);
+        MatrixSystem(coef_eq::CoefEquation *alpha, coef_eq::CoefEquation *beta, coef_eq::CoefEquation* gamma, coef_eq::CoefEquation* delta,
+                     double theta, double dt, double dx, double sigma, double r,
+                     boundary::BoundaryCondition* boundary_small_spot, boundary::BoundaryCondition* boundary_big_spot,
+                     std::vector<double> Xt1, double spot_min, double spot_max, double S0, int loop, double maturity);
         ~MatrixSystem() = default;
         std::vector<double> solve();
 
     private:
-        //Omega*Xt = A'*Xt+1 + A''*Xt +b <==> m_A*Xt = m_b
-        Eigen::MatrixXd m_A; //avec m_A = (Omega - A'')
-        Eigen::MatrixXd m_b; //et m_b = A'*Xt+1 + b
+        Eigen::MatrixXd m_A;
+        Eigen::MatrixXd m_b;
 
-        double Omega(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
-        double a_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
-        double b_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
-        double c_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
-        double d_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
-        double e_i(double i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation alpha, coef_eq::CoefEquation beta, coef_eq::CoefEquation gamma) const;
+        double m_S0;
+        int m_loop;
+        double m_maturity;
+        double m_spot_min;
+        double m_spot_max;
+
+        double Omega(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
+        double a_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
+        double b_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
+        double c_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
+        double d_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
+        double e_i(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const;
     };
 }
 
