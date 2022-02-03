@@ -10,6 +10,10 @@ namespace system_matrix
 {
     double MatrixSystem::Omega(int i, double theta, double dt, double dx, double sigma, double r, coef_eq::CoefEquation* alpha, coef_eq::CoefEquation* beta, coef_eq::CoefEquation* gamma) const
     {
+        // Gathering arguments of the same type but totally unrelated into a container to ivoke a function
+        // is usually not recommended. First, it is hard to read and to maintain, second it is not optimal
+        // since this results in a dynamic allocation / deletion. A structure for storing the arguments
+        // would be more adapted
         std::vector<double> args = {sigma, r, dx, dt, m_maturity, m_S0, m_spot_min, m_spot_max, (double)m_loop, (double)i};
         double res = theta * dt * (2*alpha->get_value(args) / pow(dx, 2.0) - gamma->get_value(args)) - 1;
         return res;

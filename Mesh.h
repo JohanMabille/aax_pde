@@ -10,10 +10,14 @@
 
 namespace mesh
 {
+    // You can go a step further and split the mesh class:
+    // - a Mesh class that is responsible for the mesh only (strike values, mautiries values, dx, dt, theta)
+    // - a class PDESolver that embeds a Mesh, boudary conditions, and the PDEModel
     class Mesh
     {
 
     public:
+        // No need to pass built-in types (including pointers) by reference (a reference takes as much space as a double),
         Mesh(double& S0, double& sigma, double& maturity, int& nb_steps_space, int& nb_steps_time, double& theta, double& r,
              payoff::Payoff*& pf, boundary::BoundaryCondition*& bound_small, boundary::BoundaryCondition*& bound_big,
              coef_eq::CoefEquation*& alpha, coef_eq::CoefEquation*& beta, coef_eq::CoefEquation*& gamma, coef_eq::CoefEquation*& delta);

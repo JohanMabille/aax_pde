@@ -28,6 +28,7 @@ set(PDE_SOLVER_SRCS
     main.cpp
     MatrixSystem.cpp
     payoff.cpp
+    Mesh.cpp
 )
 
 set(PDE_SOLVER_TARGET pde_solver)

@@ -68,8 +68,10 @@ namespace mesh
 
         for (int i=0; i<m_nb_steps_time; ++i)
         {
-
-            std::cout << "Loop number: " << i+1 << " / " << m_nb_steps_time <<std::endl;
+            //  Avoid printing during computation, it's a performance killer
+            //std::cout << "Loop number: " << i+1 << " / " << m_nb_steps_time <<std::endl;
+            // You're making huge allocations in the loop, it would be more efficient
+            // to allocate the matrices out of the loop, and only compute them in the loop
             system_matrix::MatrixSystem matrix_system(m_alpha, m_beta, m_gamma, m_delta, m_theta, m_dt, m_dx, m_sigma, m_r, m_bound_small,
                                                       m_bound_big, Xt1, spot_axis[0], spot_axis[spot_axis.size() - 1], m_S0, i, m_maturity);
 
