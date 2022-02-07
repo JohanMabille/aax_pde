@@ -38,7 +38,8 @@ void test_mesh(double S, double K, double sigma, double theta, double maturity, 
     double theta_pde = Mesh_call.get_theta();
 
     // pricing closed form
-    double price_cf = dauphine::bs_price(S*std::exp(r*maturity), K, sigma, maturity, true);
+    // This is the forward price, you need to discount it
+    double price_cf = dauphine::bs_price(S*std::exp(r*maturity), K, sigma, maturity, true)*std::exp(-r*maturity);
     double delta_cf = dauphine::call_delta(S,K,r,sigma,maturity);
     double gamma_cf = dauphine::call_gamma(S,K,r,sigma,maturity);
     double vega_cf = dauphine::call_vega(S,K,r,sigma,maturity);
